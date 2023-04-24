@@ -38,6 +38,16 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.10.jre7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.milo</groupId>
+            <artifactId>sdk-client</artifactId>
+            <version>0.6.9</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -60,7 +70,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.mini_mes/com.example.mini_mes.HelloApplication</mainClass>
+                            <mainClass>com.example.mini_mes/com.example.mini_mes.Launcher</mainClass>
                         </configuration>
                     </execution>
                 </executions>
