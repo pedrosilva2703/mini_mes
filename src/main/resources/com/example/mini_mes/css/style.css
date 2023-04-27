@@ -1,0 +1,230 @@
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto-Bold';
+    src: url('Roboto-Bold.ttf');
+}
+
+
+.text{
+    -fx-font-family: "Roboto";
+    -fx-text-fill: black;
+}
+
+/*************** MAIN MENU ***************/
+.main-menu-title{
+    -fx-background-color: #6E0F02;
+}
+.main-menu-bar{
+    -fx-font-weight: bold;
+    -fx-background-color: #8C2D19;
+    -fx-padding: 0.0em;
+}
+.main-menu-button{
+    -fx-font-size: 25;
+    -fx-text-fill: white;
+    -fx-background-color: #8C2D19;
+    -fx-alignment: center;
+    -fx-pref-width: 240;
+    -fx-pref-height: 99;
+    -fx-background-radius: 0;
+}
+.main-menu-button:hover{
+    -fx-background-color: #6E0F02;
+}
+
+.main-menu-secondary-button{
+    -fx-font-size: 25;
+    -fx-text-fill: white;
+    -fx-background-color: #8C2D19;
+    -fx-alignment: center;
+    -fx-pref-width: 150;
+    -fx-pref-height: 99;
+    -fx-background-radius: 0;
+}
+.main-menu-secondary-button:hover{
+    -fx-background-color: #6E0F02;
+}
+
+
+/*************** NAVIGATION MENU ***************/
+.menu{
+    -fx-font-weight: bold;
+    -fx-background-color: #8C2D19;
+    -fx-padding: 0.0em;
+    -fx-pref-width: 260;
+}
+
+.menu-app-name-pane{
+    -fx-background-color: #6E0F02;
+    -fx-pref-width: 260;
+}
+.menu-app-name{
+    -fx-font-size: 50;
+    -fx-text-fill: white;
+}
+
+.menu-app-button{
+    -fx-font-size: 25;
+    -fx-text-fill: white;
+    -fx-background-color: #8C2D19;
+    -fx-alignment: baseline-left;
+    -fx-padding: 10.0 0.0 10.0 45.0;
+    -fx-border-width: 0.0 0.0 0.0 10.0;
+    -fx-border-color: #8C2D19;
+    -fx-pref-width: 260;
+}
+
+.menu-app-button:hover{
+    -fx-background-color: #6E0F02;
+    -fx-border-color: #6E0F02;
+}
+
+.menu-app-button-selected{
+    -fx-font-size: 25;
+    -fx-text-fill: white;
+    -fx-background-color: #8C2D19;
+    -fx-alignment: baseline-left;
+    -fx-padding: 10.0 0.0 10.0 45.0;
+    -fx-border-width: 0.0 0.0 0.0 10.0;
+    -fx-pref-width: 260;
+    -fx-background-color: #6E0F02;
+    -fx-border-color: white;
+}
+.menu-app-button-selected:hover{
+    -fx-background-color: #6E0F02;
+    -fx-border-color: white;
+}
+
+.menu-back-button{
+    -fx-font-size: 25;
+    -fx-text-fill: white;
+    -fx-background-color: #8C2D19;
+    -fx-alignment: baseline-left;
+    -fx-pref-width: 260;
+    -fx-background-radius: 0;
+}
+.menu-back-button:hover{
+    -fx-background-color: #6E0F02;
+}
+
+/*************** PAGE TEXT ***************/
+.page-title{
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-size: 50;
+    -fx-padding: 0.0 0.0 0.0 45.0;
+}
+
+.sub-title{
+    -fx-font-size: 30;
+    -fx-underline: true;
+}
+
+.normal-text{
+    -fx-font-size: 20;
+}
+
+/*************** INPUT FIELDS ***************/
+.text-field{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14;
+}
+
+.number-field{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14;
+    -fx-pref-width: 50;
+}
+
+.combo-box{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14;
+}
+
+/*************** BUTTONS ***************/
+.regular-button{
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-background-color: #8C2D19;
+    -fx-padding: 1.0 7.0 1.0 7.0;
+    -fx-background-radius: 5;
+}
+
+.regular-button:hover{
+    -fx-opacity: 0.5;
+}
+
+.confirm-button{
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-background-color: green;
+    -fx-padding: 1.0 7.0 1.0 7.0;
+    -fx-background-radius: 5;
+}
+.confirm-button:hover{
+    -fx-opacity: 0.5;
+}
+.cancel-button{
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-background-color: red;
+    -fx-padding: 1.0 7.0 1.0 7.0;
+    -fx-background-radius: 5;
+}
+.cancel-button:hover{
+    -fx-opacity: 0.5;
+}
+
+
+/*************** TABLE VIEW ***************/
+//Style of entire tableView
+.table-view{
+    /*-fx-background-color: transparent;*/
+ }
+
+//Style of entire tableView when is getting focused
+.table-view:focused{
+    /*-fx-background-color: transparent;*/
+}
+
+//Style of each column header in the tableView
+.table-view .column-header {
+     -fx-background-color: transparent;
+}
+
+//Style of each column header's background in the tableView
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(gray 0.0%, darkgray 100.0%);
+    -fx-font-size:17px;
+}
+
+ //Style of each column header's label  in the tableView
+.table-view .column-header-background .label{
+     -fx-background-color: transparent;
+    -fx-font-weight:bold;
+    -fx-text-fill: white;
+}
+
+//Style of each column in the tableView
+.table-view .table-column{
+    -fx-alignment:center-left;
+}
+
+ //Style of each table cell
+.table-view .table-cell{
+    -fx-font-size:15px;           //the font size you asked in the comments below
+}
+
+//Style of each entire row in the table view
+.table-row-cell:selected {
+   /* -fx-border-color:transparent firebrick transparent firebrick  ;
+    -fx-border-width:2.0; */
+}
+
+
+

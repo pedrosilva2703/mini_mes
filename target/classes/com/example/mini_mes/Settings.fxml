@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1020.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mini_mes.controllers.SettingsController">
+   <children>
+      <Text layoutX="40.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="page-title" text="Settings" />
+      <Text layoutX="40.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sub-title" text="PostgreSQL Connection" />
+      <Text layoutX="40.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="URL" />
+      <Text layoutX="40.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="Port" />
+      <TextField fx:id="tf_url" layoutX="119.0" layoutY="144.0" prefHeight="25.0" prefWidth="280.0" />
+      <TextField fx:id="tf_port" layoutX="119.0" layoutY="174.0" prefHeight="25.0" prefWidth="280.0" />
+      <Button fx:id="btn_dbConn" layoutX="119.0" layoutY="268.0" mnemonicParsing="false" onMouseClicked="#onDbConnectButtonClicked" styleClass="regular-button" text="Connect" />
+      <Text layoutX="435.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="Username" />
+      <TextField fx:id="tf_username" layoutX="532.0" layoutY="144.0" prefHeight="25.0" prefWidth="280.0" />
+      <Text layoutX="435.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="Password" />
+      <TextField fx:id="tf_password" layoutX="532.0" layoutY="174.0" prefHeight="25.0" prefWidth="280.0" />
+      <Text layoutX="40.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="Name" />
+      <Text layoutX="40.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="Schema" />
+      <TextField fx:id="tf_name" layoutX="119.0" layoutY="204.0" prefHeight="25.0" prefWidth="280.0" />
+      <TextField fx:id="tf_schema" layoutX="119.0" layoutY="234.0" prefHeight="25.0" prefWidth="280.0" />
+   </children>
+</AnchorPane>

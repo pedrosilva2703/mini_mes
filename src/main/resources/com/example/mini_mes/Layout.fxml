@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mini_mes.controllers.LayoutController">
+   <left>
+      <VBox prefHeight="520.0" prefWidth="260.0" styleClass="menu" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="100.0" prefWidth="260.0" styleClass="menu-app-name-pane">
+               <children>
+                  <Label layoutX="25.0" layoutY="20.0" styleClass="menu-app-name" text="mini-MES" />
+               </children>
+            </Pane>
+            <Pane prefHeight="79.0" prefWidth="242.0" />
+            <Button fx:id="firstButton" mnemonicParsing="false" onMouseClicked="#onFirstButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="1" />
+            <Button fx:id="secondButton" mnemonicParsing="false" onMouseClicked="#onSecondButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="2" />
+            <Pane prefHeight="62.0" prefWidth="260.0" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="Settings" />
+            <Pane prefHeight="62.0" prefWidth="242.0" />
+            <Pane prefHeight="62.0" prefWidth="260.0" />
+         </children></VBox>
+   </left>
+</BorderPane>
