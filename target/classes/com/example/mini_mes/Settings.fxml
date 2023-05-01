@@ -22,5 +22,6 @@
       <Text layoutX="40.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="Schema" />
       <TextField fx:id="tf_name" layoutX="119.0" layoutY="204.0" prefHeight="25.0" prefWidth="280.0" />
       <TextField fx:id="tf_schema" layoutX="119.0" layoutY="234.0" prefHeight="25.0" prefWidth="280.0" />
+      <Button fx:id="btn_TEST" layoutX="421.0" layoutY="390.0" mnemonicParsing="false" onMouseClicked="#onMesTestButtonClicked" styleClass="regular-button" text="MES TEST" />
    </children>
 </AnchorPane>

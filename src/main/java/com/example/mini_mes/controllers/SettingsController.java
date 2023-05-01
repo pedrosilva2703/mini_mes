@@ -3,7 +3,9 @@ package com.example.mini_mes.controllers;
 import com.example.mini_mes.Launcher;
 import com.example.mini_mes.database.DatabaseHandler;
 import com.example.mini_mes.model.Factory;
+import com.example.mini_mes.tasks.MesTask;
 import com.example.mini_mes.utils.Alerts;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +31,7 @@ public class SettingsController implements Initializable {
     @FXML private TextField tf_username;
     @FXML private TextField tf_password;
     @FXML private Button btn_dbConn;
+
 
     @FXML
     private void onDbConnectButtonClicked(){
@@ -56,6 +59,14 @@ public class SettingsController implements Initializable {
         updateInputsState();
     }
 
+    @FXML
+    private void onMesTestButtonClicked(){
+        MesTask mesTask = new MesTask();
+
+        Thread thread = new Thread(mesTask);
+        thread.setDaemon(true);
+        thread.start();
+    }
 
     // Manage input textfields and buttons
     private void updateInputsState(){
@@ -65,6 +76,12 @@ public class SettingsController implements Initializable {
         else{
             disableDbInputs();
             dbHandler = DatabaseHandler.getInstance();
+
+            MesTask mesTask = new MesTask();
+
+            Thread thread = new Thread(mesTask);
+            thread.setDaemon(true);
+            thread.start();
         }
     }
 

@@ -1,6 +1,8 @@
 package com.example.mini_mes.controllers;
 
 import com.example.mini_mes.Launcher;
+import com.example.mini_mes.model.Factory;
+import com.example.mini_mes.utils.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -11,8 +13,7 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
 public class LayoutController {
-    @FXML
-    private BorderPane mainPane;
+    @FXML private BorderPane mainPane;
 
     @FXML private Button firstButton;
     @FXML private Button secondButton;
@@ -21,16 +22,29 @@ public class LayoutController {
 
     @FXML
     private void onFirstButtonClick(){
-
+        Factory factory = Factory.getInstance();
+        if( factory.isWaitingForDbConn() ){
+            Alerts.showInfo("Please, connect to the database first.");
+            return;
+        }
+        //loadPage("Settings");
+        //refreshButtonStates(settingsButton);
     }
     @FXML
     private void onSecondButtonClick(){
-
+        Factory factory = Factory.getInstance();
+        if( factory.isWaitingForDbConn() ){
+            Alerts.showInfo("Please, connect to the database first.");
+            return;
+        }
+        //loadPage("Settings");
+        //refreshButtonStates(settingsButton);
     }
     @FXML
     private void onSettingsButtonClick(){
         loadPage("Settings");
         refreshButtonStates(settingsButton);
+        return;
     }
 
 
@@ -42,7 +56,6 @@ public class LayoutController {
         b.getStyleClass().remove("menu-app-button");
         b.getStyleClass().add("menu-app-button-selected");
     }
-
     private void refreshButtonStates(Button clickedButton){
         // Unselect all buttons
         unselectButton(firstButton);
