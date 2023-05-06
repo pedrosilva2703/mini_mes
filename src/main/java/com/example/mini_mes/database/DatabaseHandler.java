@@ -1,7 +1,12 @@
 package com.example.mini_mes.database;
 
+import com.example.mini_mes.model.ExpeditionOrder;
 import com.example.mini_mes.model.Factory;
+import com.example.mini_mes.model.InboundOrder;
+import com.example.mini_mes.model.Piece;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseHandler {
     private static DatabaseHandler instance;
@@ -94,6 +99,185 @@ public class DatabaseHandler {
         return true;
     }
 
+    //ERP orders methods
+    public ArrayList<InboundOrder> getInboundOrders(int filter_week){
+        String sql =    "SELECT  id,\n" +
+                "        week,\n" +
+                "        status,\n" +
+                "        FK_supplier_order\n" +
+                "FROM inbound_order\n" +
+                "WHERE week = ?\n" +
+                "ORDER BY id ASC ";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, filter_week);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<InboundOrder> returnValues = new ArrayList<>();
+
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                int week = sqlReturnValues.getInt(2);
+                String status = sqlReturnValues.getString(3);
+                returnValues.add(new InboundOrder(id, week, status, getPiecesByIO(id) ) );
+            }
+
+
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
+    public ArrayList<ExpeditionOrder> getExpeditionOrdersByWeek(int filter_week){
+        String sql =    "SELECT  id,\n" +
+                "        week,\n" +
+                "        status,\n" +
+                "        FK_client_order\n" +
+                "FROM expedition_order\n" +
+                "WHERE week = ?\n" +
+                "ORDER BY id ASC";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, filter_week);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<ExpeditionOrder> returnValues = new ArrayList<>();
+
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                int week = sqlReturnValues.getInt(2);
+                String status = sqlReturnValues.getString(3);
+                returnValues.add(new ExpeditionOrder(id, week, status, getPiecesByEO(id)) );
+            }
+
+
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
+
+
+    //Piece methods
+    public ArrayList<Piece> getPiecesByIO(int IO_id){
+        String sql =    "SELECT  id,\n" +
+                "        type,\n" +
+                "        status,\n" +
+                "        final_type,\n" +
+                "        week_arrived,\n" +
+                "        week_produced,\n" +
+                "        duration_production,\n" +
+                "        safety_stock,\n" +
+                "        wh_pos\n" +
+                "FROM piece \n" +
+                "WHERE FK_inbound_order = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, IO_id);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<Piece> returnValues = new ArrayList<>();
+
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                String type = sqlReturnValues.getString(2);
+                String status = sqlReturnValues.getString(3);
+                String final_type = sqlReturnValues.getString(4);
+                Integer week_arrived = sqlReturnValues.getInt(5);
+                Integer week_produced = sqlReturnValues.getInt(6);
+                Float duration_production = sqlReturnValues.getFloat(7);
+                boolean safety_stock = sqlReturnValues.getBoolean(8);
+                Integer wh_pos = sqlReturnValues.getInt(9);
+
+                returnValues.add(new Piece(id, type, status, final_type, week_arrived, week_produced, duration_production, safety_stock, wh_pos) );
+            }
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
+    public ArrayList<Piece> getPiecesByPO(int PO_id){
+        String sql =    "SELECT  id,\n" +
+                "        type,\n" +
+                "        status,\n" +
+                "        final_type,\n" +
+                "        week_arrived,\n" +
+                "        week_produced,\n" +
+                "        duration_production,\n" +
+                "        safety_stock,\n" +
+                "        wh_pos\n" +
+                "FROM piece \n" +
+                "WHERE FK_production_order = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, PO_id);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<Piece> returnValues = new ArrayList<>();
+
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                String type = sqlReturnValues.getString(2);
+                String status = sqlReturnValues.getString(3);
+                String final_type = sqlReturnValues.getString(4);
+                Integer week_arrived = sqlReturnValues.getInt(5);
+                Integer week_produced = sqlReturnValues.getInt(6);
+                Float duration_production = sqlReturnValues.getFloat(7);
+                boolean safety_stock = sqlReturnValues.getBoolean(8);
+                Integer wh_pos = sqlReturnValues.getInt(9);
+
+                returnValues.add(new Piece(id, type, status, final_type, week_arrived, week_produced, duration_production, safety_stock, wh_pos) );
+            }
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
+    public ArrayList<Piece> getPiecesByEO(int EO_id){
+        String sql =    "SELECT  id,\n" +
+                "        type,\n" +
+                "        status,\n" +
+                "        final_type,\n" +
+                "        week_arrived,\n" +
+                "        week_produced,\n" +
+                "        duration_production,\n" +
+                "        safety_stock,\n" +
+                "        wh_pos\n" +
+                "FROM piece \n" +
+                "WHERE FK_expedition_order = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, EO_id);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<Piece> returnValues = new ArrayList<>();
+
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                String type = sqlReturnValues.getString(2);
+                String status = sqlReturnValues.getString(3);
+                String final_type = sqlReturnValues.getString(4);
+                Integer week_arrived = sqlReturnValues.getInt(5);
+                Integer week_produced = sqlReturnValues.getInt(6);
+                Float duration_production = sqlReturnValues.getFloat(7);
+                boolean safety_stock = sqlReturnValues.getBoolean(8);
+                Integer wh_pos = sqlReturnValues.getInt(9);
+
+                returnValues.add(new Piece(id, type, status, final_type, week_arrived, week_produced, duration_production, safety_stock, wh_pos) );
+            }
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
 
     //MES simulation methods
     public void setInboundRunning(int week){

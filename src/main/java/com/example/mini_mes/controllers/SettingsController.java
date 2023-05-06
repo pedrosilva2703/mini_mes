@@ -61,17 +61,12 @@ public class SettingsController implements Initializable {
 
     @FXML
     private void onMesTestButtonClicked(){
-        MesTask mesTask = new MesTask();
-
-        Thread thread = new Thread(mesTask);
-        thread.setDaemon(true);
-        thread.start();
     }
 
     // Manage input textfields and buttons
     private void updateInputsState(){
         if(     factory.isWaitingForDbConn() ){
-            System.out.println("tou a espera de conection");
+
         }
         else{
             disableDbInputs();

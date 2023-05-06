@@ -38,7 +38,7 @@ public class OpcUaHandler {
         try {
             client = OpcUaClient.create(address);
             client.connect().get();
-            System.out.println("initialized");
+            System.out.println("OPC-UA connected");
         } catch (UaException e) {
             e.printStackTrace();
             Alerts.showError("The connection to OPC-UA server failed");
@@ -56,6 +56,10 @@ public class OpcUaHandler {
     public boolean sendOrder(Order order){
         String orders_node_path = commandsNodePath + ".orders.";
         String part_node_path = orders_node_path + "part_info.";
+
+        while(readBoolean(orders_node_path, "new_data") ){
+            //wait until new_data is false
+        }
 
         writeInt(order.getId(), orders_node_path, "id");
         writeInt(order.getOrder_type(), orders_node_path, "order_type");
@@ -188,5 +192,22 @@ public class OpcUaHandler {
         }
         int id = Integer.parseInt(value.getValue().getValue().toString());
         return id;
+    }
+    public boolean readBoolean(String node_path, String variable){
+        String identifier = node_path + variable;
+        NodeId nodeId = new NodeId(namespaceIndex, identifier);
+
+        UaVariableNode mm = null;
+        DataValue value = null;
+        try {
+            mm = client.getAddressSpace().getVariableNode(nodeId);
+            value = mm.readValue();
+        } catch (UaException e) {
+            e.printStackTrace();
+            System.out.println("Failed to read int value");
+            System.out.println(identifier);
+        }
+        boolean returnValue = Boolean.parseBoolean(value.getValue().getValue().toString());
+        return returnValue;
     }
 }
