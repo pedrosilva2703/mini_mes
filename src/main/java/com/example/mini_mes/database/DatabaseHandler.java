@@ -100,7 +100,7 @@ public class DatabaseHandler {
     }
 
     //ERP orders methods
-    public ArrayList<InboundOrder> getInboundOrders(int filter_week){
+    public ArrayList<InboundOrder> getInboundOrdersByWeek(int filter_week){
         String sql =    "SELECT  id,\n" +
                 "        week,\n" +
                 "        status,\n" +
@@ -158,7 +158,88 @@ public class DatabaseHandler {
         }
         return null;
     }
+    public boolean wasLastPieceFromInbound(int piece_id){
+        String sql =    "SELECT COUNT(piece.id), SUM(CASE WHEN piece.week_arrived IS NOT NULL THEN 1 ELSE 0 END)\n" +
+                        "FROM piece\n" +
+                        "JOIN inbound_order ON piece.fk_inbound_order = inbound_order.id\n" +
+                        "WHERE inbound_order.id IN\n" +
+                        "    (SELECT piece.fk_inbound_order\n" +
+                        "     FROM piece\n" +
+                        "     WHERE piece.id = ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, piece_id);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+            sqlReturnValues.next();
 
+            if( sqlReturnValues.getInt(1) != sqlReturnValues.getInt(2) ){
+                return false;
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return true;
+    }
+    public void setInboundCompletedByLastPiece(int piece_id){
+        String sql =    "UPDATE inbound_order\n" +
+                "SET status = ? \n" +
+                "WHERE inbound_order.id IN\n" +
+                "    (SELECT piece.fk_inbound_order\n" +
+                "     FROM piece\n" +
+                "     WHERE piece.id = ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, "completed");
+            stmt.setInt(2, piece_id);
+            stmt.execute();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
+        }
+        return;
+    }
+    public boolean wasLastPieceFromExpedition(int piece_id){
+        String sql =    "SELECT COUNT(piece.id), SUM(CASE WHEN piece.wh_pos IS NULL THEN 1 ELSE 0 END)\n" +
+                "FROM piece\n" +
+                "JOIN expedition_order ON piece.fk_expedition_order = expedition_order.id\n" +
+                "WHERE expedition_order.id IN\n" +
+                "    (SELECT piece.fk_expedition_order\n" +
+                "     FROM piece\n" +
+                "     WHERE piece.id = ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, piece_id);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+            sqlReturnValues.next();
+
+            if( sqlReturnValues.getInt(1) != sqlReturnValues.getInt(2) ){
+                return false;
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return true;
+    }
+    public void setExpeditionCompletedByLastPiece(int piece_id){
+        String sql =    "UPDATE expedition_order\n" +
+                "SET status = ? \n" +
+                "WHERE expedition_order.id IN\n" +
+                "    (SELECT piece.fk_expedition_order\n" +
+                "     FROM piece\n" +
+                "     WHERE piece.id = ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, "completed");
+            stmt.setInt(2, piece_id);
+            stmt.execute();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
+        }
+        return;
+    }
 
     //Piece methods
     public ArrayList<Piece> getPiecesByIO(int IO_id){
@@ -278,6 +359,39 @@ public class DatabaseHandler {
         }
         return null;
     }
+    public void updatePieceInbound(int id, int week_arrived, int wh_pos){
+        String sql =    "UPDATE piece \n" +
+                        "SET week_arrived = ?, wh_pos = ?\n" +
+                        "WHERE id=?\n";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, week_arrived);
+            stmt.setInt(2, wh_pos);
+            stmt.setInt(3, id);
+            stmt.execute();
+            System.out.println("atualizei a inbound da " + id);
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
+        }
+        return;
+    }
+    public void updatePieceExpedition(int id){
+        String sql =    "UPDATE piece \n" +
+                        "SET wh_pos = ?\n" +
+                        "WHERE id=?\n";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setNull(1, Types.INTEGER);
+            stmt.setInt(2, id);
+            stmt.execute();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
+        }
+        return;
+    }
 
     //MES simulation methods
     public void setInboundRunning(int week){
@@ -329,22 +443,7 @@ public class DatabaseHandler {
         return;
     }
 
-    public void setInboundCompleted(int week){
-        String sql =    "UPDATE inbound_order\n" +
-                "SET status = ? \n" +
-                "WHERE week = ? \n";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setString(1, "completed");
-            stmt.setInt(2, week);
-            stmt.execute();
 
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-            return;
-        }
-        return;
-    }
     public void setPiecesInbound(int week){
         String sql =    "UPDATE piece \n" +
                         "SET week_arrived = ?, wh_pos = 11\n" +
