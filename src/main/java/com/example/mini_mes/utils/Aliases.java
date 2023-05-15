@@ -17,4 +17,15 @@ public class Aliases {
     public static final int BASE            = 15;
     public static final int RAW             = 16;
     public static final int ALL             = -7;
+
+    public static int getOpByFinalType(String final_type){
+        if( final_type.equals("GreenProductBase")
+            || final_type.equals("BlueProductBase")
+            || final_type.equals("MetalProductBase")){
+            return TO_BASE;
+        }
+        else{
+            return TO_LID;
+        }
+    }
 }

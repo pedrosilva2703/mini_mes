@@ -1,9 +1,6 @@
 package com.example.mini_mes.database;
 
-import com.example.mini_mes.model.ExpeditionOrder;
-import com.example.mini_mes.model.Factory;
-import com.example.mini_mes.model.InboundOrder;
-import com.example.mini_mes.model.Piece;
+import com.example.mini_mes.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -120,6 +117,34 @@ public class DatabaseHandler {
                 int week = sqlReturnValues.getInt(2);
                 String status = sqlReturnValues.getString(3);
                 returnValues.add(new InboundOrder(id, week, status, getPiecesByIO(id) ) );
+            }
+
+
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
+    public ArrayList<ProductionOrder> getProductionOrdersByWeek(int filter_week){
+        String sql =    "SELECT  id,\n" +
+                "        week,\n" +
+                "        status\n" +
+                "FROM production_order\n" +
+                "WHERE week = ?\n" +
+                "ORDER BY id ASC";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, filter_week);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<ProductionOrder> returnValues = new ArrayList<>();
+
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                int week = sqlReturnValues.getInt(2);
+                String status = sqlReturnValues.getString(3);
+                returnValues.add(new ProductionOrder(id, week, status, getPiecesByPO(id)) );
             }
 
 
@@ -369,7 +394,6 @@ public class DatabaseHandler {
             stmt.setInt(2, wh_pos);
             stmt.setInt(3, id);
             stmt.execute();
-            System.out.println("atualizei a inbound da " + id);
         } catch (SQLException throwable) {
             throwable.printStackTrace();
             return;

@@ -89,6 +89,11 @@ public class OpcUaHandler {
 
         writeBool(true, orders_node_path, "new_data");
 
+        System.out.println("\nOrder sent");
+        System.out.println("Id: " + order.getId());
+        System.out.println("order_type: " + order.getOrder_type());
+        System.out.println("target: " + order.getTarget_group()[0]);
+        System.out.println("first path" + order.getPart_info().getPath()[0]);
         return true;
     }
     public boolean isOrderFinished(Order order){
@@ -99,7 +104,10 @@ public class OpcUaHandler {
             int status = readInt(curr_order_path, "order_status");
             int id = readInt(curr_order_path, "part_info.order_id");
 
-            if(id == order.getId() && status == Status.FINISHED ) return true;
+            if(id == order.getId() && status == Status.FINISHED ) {
+                System.out.println("\n order " + id + " was finished \n");
+                return true;
+            }
         }
         return false;
     }

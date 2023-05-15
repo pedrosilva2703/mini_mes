@@ -41,6 +41,11 @@ public class Order {
         this.target_group[0] = target_group;
         this.part_info = part_info;
     }
+    public void setNewPropsOrder(int target_group, Part part_info){
+        this.order_type = OrdersAliases.NEW_PROPS;
+        this.target_group[0] = target_group;
+        this.part_info = part_info;
+    }
 
     //Getters
     public int getId() {

@@ -13,6 +13,7 @@ public class Piece {
 
     int[] path = new int[50];
     int current_location;
+    Machine allocated_machine;
 
     public Piece(Integer id, String type, String status, String final_type, Integer week_arrived, Integer week_produced, Float duration_production, boolean safety_stock, Integer wh_pos) {
         this.id = id;
@@ -97,4 +98,9 @@ public class Piece {
     public void setWh_pos(Integer wh_pos) {
         this.wh_pos = wh_pos;
     }
+
+    public void setAllocated_machine(Machine machine){
+        allocated_machine = machine;
+    }
+    public Machine getAllocated_machine(){ return allocated_machine;}
 }
