@@ -224,6 +224,47 @@ public class DatabaseHandler {
         }
         return;
     }
+    public boolean wasLastPieceFromProduction(int piece_id){
+        String sql =    "SELECT COUNT(piece.id), SUM(CASE WHEN piece.week_produced IS NOT NULL THEN 1 ELSE 0 END)\n" +
+                "FROM piece\n" +
+                "JOIN production_order ON piece.fk_production_order = production_order.id\n" +
+                "WHERE production_order.id IN\n" +
+                "    (SELECT piece.fk_production_order\n" +
+                "     FROM piece\n" +
+                "     WHERE piece.id = ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, piece_id);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+            sqlReturnValues.next();
+
+            if( sqlReturnValues.getInt(1) != sqlReturnValues.getInt(2) ){
+                return false;
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return true;
+    }
+    public void setProductionCompletedByLastPiece(int piece_id){
+        String sql =    "UPDATE production_order\n" +
+                "SET status = ? \n" +
+                "WHERE production_order.id IN\n" +
+                "    (SELECT piece.fk_production_order\n" +
+                "     FROM piece\n" +
+                "     WHERE piece.id = ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, "completed");
+            stmt.setInt(2, piece_id);
+            stmt.execute();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
+        }
+        return;
+    }
     public boolean wasLastPieceFromExpedition(int piece_id){
         String sql =    "SELECT COUNT(piece.id), SUM(CASE WHEN piece.wh_pos IS NULL THEN 1 ELSE 0 END)\n" +
                 "FROM piece\n" +
@@ -393,6 +434,24 @@ public class DatabaseHandler {
             stmt.setInt(1, week_arrived);
             stmt.setInt(2, wh_pos);
             stmt.setInt(3, id);
+            stmt.execute();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
+        }
+        return;
+    }
+    public void updatePieceProduction(int id, String status, int week_produced, int wh_pos){
+        String sql =    "UPDATE piece \n" +
+                "SET type = final_type, status = ?, week_produced = ?, wh_pos = ?\n" +
+                "WHERE id=?\n";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, status);
+            stmt.setInt(2, week_produced);
+            stmt.setInt(3, wh_pos);
+            stmt.setInt(4, id);
             stmt.execute();
         } catch (SQLException throwable) {
             throwable.printStackTrace();

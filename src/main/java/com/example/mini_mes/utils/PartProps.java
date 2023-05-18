@@ -44,4 +44,20 @@ public class PartProps {
         return EMPTY;
 
     }
+
+    public static int getFinalTypeValue(int raw_type, int op){
+        if(raw_type == BlueRawMaterial){
+            if(op == Aliases.TO_LID) return BlueProductLid;
+            else return BlueProductBase;
+        }
+        if(raw_type == MetalRawMaterial){
+            if(op == Aliases.TO_LID) return MetalProductLid;
+            else return MetalProductBase;
+        }
+        if(raw_type == GreenRawMaterial){
+            if(op == Aliases.TO_LID) return GreenProductLid;
+            else return GreenProductBase;
+        }
+        return -1;
+    }
 }

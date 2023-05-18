@@ -9,9 +9,8 @@ import com.example.mini_mes.utils.PartProps;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class MesTask extends Task<Void> {
+public class BackupWithStarTrek extends Task<Void> {
     DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
 
@@ -39,10 +38,10 @@ public class MesTask extends Task<Void> {
             //Definir os paths e targets a serem usados
             int[] path_out_1 = new int[50];
             int[] path_out_2 = new int[50];
-            path_out_1[0] = 35; path_out_1[1] = -1;
-            path_out_2[0] = 36; path_out_2[1] = 37; path_out_2[2] = -1;
-            int target_out_1 = 34;
-            int target_out_2 = 35;
+            path_out_1[0] = 15; path_out_1[1] = 16; path_out_1[2] = -1;
+            path_out_2[0] = 17; path_out_2[1] = 18; path_out_2[2] = -1;
+            int target_out_1 = 15;
+            int target_out_2 = 16;
 
             //Obter uma lista de EO da semana atual
             ArrayList<ExpeditionOrder> EO_list = dbHandler.getExpeditionOrdersByWeek(current_week);
@@ -116,12 +115,12 @@ public class MesTask extends Task<Void> {
                 order_emit = new Order();
                 Piece p = inbound_pieces.get(0);
                 Part partinfo_emit = new Part(  p.getId(),
-                                            path_in_1,
-                                            PartProps.Pallet,
-                                            PartProps.getTypeValue(p.getType()),
-                                            p.getId(), //alterar
-                                            Aliases.NONE,
-                                            order_emit.getId());
+                        path_in_1,
+                        PartProps.Pallet,
+                        PartProps.getTypeValue(p.getType()),
+                        p.getId(), //alterar
+                        Aliases.NONE,
+                        order_emit.getId());
                 order_emit.setEmitOrder(target_in_1, partinfo_emit);
 
                 //Enviar a ordem para a DT
@@ -217,12 +216,12 @@ public class MesTask extends Task<Void> {
                     //Criar uma NEWPATH_IN order para essa peça
                     Order order_NewPathIn = new Order();
                     Part partinfo_NewPathIn = new Part( order_emit.getPart_info().getId(),
-                                                        path_in_2,
-                                                        order_emit.getPart_info().getType_base(),
-                                                        order_emit.getPart_info().getType_part(),
-                                                        order_emit.getPart_info().getStore_position(),
-                                                        order_emit.getPart_info().getOp(),
-                                                        order_NewPathIn.getId());
+                            path_in_2,
+                            order_emit.getPart_info().getType_base(),
+                            order_emit.getPart_info().getType_part(),
+                            order_emit.getPart_info().getStore_position(),
+                            order_emit.getPart_info().getOp(),
+                            order_NewPathIn.getId());
                     order_NewPathIn.setNewPathOrder(target_in_2, partinfo_NewPathIn);
 
                     //Enviar a order para a DT
@@ -237,12 +236,12 @@ public class MesTask extends Task<Void> {
                         order_emit = new Order();
                         Piece p = inbound_pieces.get(emitted_pieces);
                         Part partinfo_emit = new Part(  p.getId(),
-                                                        path_in_1,
-                                                        PartProps.Pallet,
-                                                        PartProps.getTypeValue(p.getType()),
-                                                    p.getId(), //alterar
-                                                        Aliases.NONE,
-                                                        order_emit.getId());
+                                path_in_1,
+                                PartProps.Pallet,
+                                PartProps.getTypeValue(p.getType()),
+                                p.getId(), //alterar
+                                Aliases.NONE,
+                                order_emit.getId());
                         order_emit.setEmitOrder(target_in_1, partinfo_emit);
 
                         //Enviar a ordem para a DT
@@ -259,41 +258,41 @@ public class MesTask extends Task<Void> {
                 }
             }
 
-            ///Clear orders_array in DT
-            opcHandler.clearReadSigFlag();
-
             //------------------- Production Orders setup -------------------//
             //Criar as arraylist de paths e targets a serem usados
             int target_outwh_prod = 3;
             int[] path_outwh_prod = new int[50];
             path_outwh_prod[0] = 2; path_outwh_prod[1] = 3; path_outwh_prod[2] = -1;
 
+            int target_newpath_pallet_remover = 4;
+            int[] path_newpath_pallet_remover = new int[50];
+            path_newpath_pallet_remover[0] = 5; path_newpath_pallet_remover[1] = -1;
 
-            int target_newpath_prod = 4;
+            int target_newpath_prod = 5;
             ArrayList<Machine> machine_list = new ArrayList<>();
             int[] path_machine1 = new int[50];
-            path_machine1[0] = 5; path_machine1[1] = 7; path_machine1[2] = 8; path_machine1[3] = 9; path_machine1[4] = 10;
-            path_machine1[5] = 11; path_machine1[6] = 12; path_machine1[7] = 13; path_machine1[8] = 14; path_machine1[9] = 15;
-            path_machine1[10] = 29; path_machine1[11] = 30; path_machine1[12] = -1;
+            path_machine1[0] = 7; path_machine1[1] = 8; path_machine1[2] = 9; path_machine1[3] = 10; path_machine1[4] = 11;
+            path_machine1[5] = 12; path_machine1[6] = 13; path_machine1[7] = 14; path_machine1[8] = 15;
+            path_machine1[9] = 29; path_machine1[10] = 30; path_machine1[11] = -1;
             int[] path_machine2 = new int[50];
-            path_machine2[0] = 5; path_machine2[1] = 7; path_machine2[2] = 8; path_machine2[3] = 9; path_machine2[4] = 16;
-            path_machine2[5] = 17; path_machine2[6] = 18; path_machine2[7] = 19; path_machine2[8] = 20; path_machine2[9] = 27;
-            path_machine2[10] = 28; path_machine2[11] = 29; path_machine2[12] = 30; path_machine2[13] = -1;
+            path_machine2[0] = 7; path_machine2[1] = 8; path_machine2[2] = 9; path_machine2[3] = 16; path_machine2[4] = 17;
+            path_machine2[5] = 18; path_machine2[6] = 19; path_machine2[7] = 20; path_machine2[8] = 27;
+            path_machine2[9] = 28; path_machine2[10] = 29; path_machine2[11] = 30; path_machine2[12] = -1;
             int[] path_machine3 = new int[50];
-            path_machine3[0] = 5; path_machine3[1] = 7; path_machine3[2] = 8; path_machine3[3] = 9; path_machine3[4] = 21;
-            path_machine3[5] = 22; path_machine3[6] = 23; path_machine3[7] = 24; path_machine3[8] = 25; path_machine3[9] = 26;
-            path_machine3[10] = 27; path_machine3[11] = 28; path_machine3[12] = 29; path_machine3[13] = 30; path_machine3[14] = -1;
+            path_machine3[0] = 7; path_machine3[1] = 8; path_machine3[2] = 9; path_machine3[3] = 21; path_machine3[4] = 22;
+            path_machine3[5] = 23; path_machine3[6] = 24; path_machine3[7] = 25; path_machine3[8] = 26;
+            path_machine3[9] = 27; path_machine3[10] = 28; path_machine3[11] = 29; path_machine3[12] = 30;
+            path_machine3[13] = -1;
 
             machine_list.add(new Machine(11, path_machine1, "DualProducer"));
             machine_list.add(new Machine(18, path_machine2, "DualProducer"));
             machine_list.add(new Machine(25, path_machine3, "DualProducer"));
 
-            double defective_probability = 0.01;
-            int target_emit_prod = 31;
-            int[] path_emit_prod_1 = new int[50];
-            path_emit_prod_1[0] = 32; path_emit_prod_1[1] = 33; path_emit_prod_1[2] = 34; path_emit_prod_1[3] = -1;
-            int[] path_emit_prod_2 = new int[50];
-            path_emit_prod_2[0] = 32; path_emit_prod_2[1] = 38; path_emit_prod_2[2] = 39; path_emit_prod_2[3] = -1;
+            int target_emit_prod= 31;
+            int[] path_emit_prod_wh = new int[50];
+            path_emit_prod_wh[0] = 32; path_emit_prod_wh[1] = 33; path_emit_prod_wh[2] = 34; path_emit_prod_wh[3] = -1;
+            int[] path_emit_prod_disposer = new int[50];
+            path_emit_prod_disposer[0] = 32; path_emit_prod_disposer[1] = 38; path_emit_prod_disposer[2] = 39; path_emit_prod_disposer[3] = -1;
 
             //Criar uma lista das Production Orders para esta semana
             ArrayList<ProductionOrder> PO_list = dbHandler.getProductionOrdersByWeek(current_week);
@@ -305,6 +304,7 @@ public class MesTask extends Task<Void> {
                     unsorted_production_pieces.add(p);
                 }
             }
+
 
             //Criar uma lista ordenada de peças scheduled
             ArrayList<Piece> sorted_production_pieces = new ArrayList<>();
@@ -328,6 +328,8 @@ public class MesTask extends Task<Void> {
                 }
             }
 
+
+
             //Criar um contador de peças retiradas e peças processadas armazenadas
             int removed_prod_pieces = 0, completed_prod_pieces = 0;
             //Criar uma order de OUTWH_prod
@@ -338,12 +340,12 @@ public class MesTask extends Task<Void> {
                 order_OUTWH_prod = new Order();
                 Piece p = sorted_production_pieces.get(0);
                 Part partinfo_outwh_prod = new Part(    p.getId(),
-                                                        path_outwh_prod,
-                                                        PartProps.Pallet,
-                                                        PartProps.getTypeValue(p.getType()),
-                                                        p.getWh_pos(), //alterar
-                                                        Aliases.NONE,
-                                                        order_OUTWH_prod.getId());
+                        path_outwh_prod,
+                        PartProps.Pallet,
+                        PartProps.getTypeValue(p.getType()),
+                        p.getWh_pos(), //alterar
+                        Aliases.NONE,
+                        order_OUTWH_prod.getId());
                 order_OUTWH_prod.setOutWhOrder(target_outwh_prod, p.getWh_pos(), partinfo_outwh_prod);
                 //Envia a ordem para a DT
                 opcHandler.sendOrder(order_OUTWH_prod);
@@ -351,50 +353,32 @@ public class MesTask extends Task<Void> {
                 removed_prod_pieces++;
             }
 
-            //Criar uma lista de orders de EMIT_prod
+            //Criar uma order de NEWPATH_pallet_remover
+            Order order_NEWPATH_pallet_remover = null;
+            //Criar uma lista de orders de NEWPATH_prod
             ArrayList<Order> NEWPATH_prod_List = new ArrayList<>();
+            //Criar uma lista de orders de EMIT_prod_scan
+            ArrayList<Order> EMIT_prod_List = new ArrayList<>();
 
-            //Criar uma order para INWH_prod
-            Order order_INWH_prod = null;
+            System.out.println();
 
             //Enquanto o contador de peças processadas armazenadas != do numero total de peças
             while(sorted_production_pieces.size() != completed_prod_pieces){
 
-                //Se a order NEWPATH_pallet_remover não for null ou estiver finished
-                if(order_OUTWH_prod != null && opcHandler.isOrderFinished(order_OUTWH_prod)) {
-
-                    //Criar uma NEWPATH_prod order para essa peça
-                    Order order_NEWPATH_prod = new Order();
-                    //Obter a Piece equivalente à Part (para obter a máquina alocada)
-                    Piece current_piece = null;
-                    for(Piece p : sorted_production_pieces){
-                        if(p.getId() == order_OUTWH_prod.getPart_info().getId() ){
-                            current_piece = p;
-                            break;
-                        }
-                    }
-                    //Obter a transformação desejada
-                    int op = Aliases.getOpByFinalType(current_piece.getFinal_type());
-                    //Utilizar o path para essa máquina
-                    Part partinfo_NEWPATH_prod = new Part(  current_piece.getId(),
-                                                            current_piece.getAllocated_machine().getPath(),
-                                                            PartProps.EMPTY,
-                                                            order_OUTWH_prod.getPart_info().getType_part(),
-                                                            order_OUTWH_prod.getPart_info().getStore_position(),
-                                                            op,
-                                                            order_NEWPATH_prod.getId());
-
-                    //Primeiro é necessário enviar uma NewProps order igual à NewPath
-                    Order order_NEWPROPS_prod = new Order();
-                    order_NEWPROPS_prod.setNewPropsOrder(target_newpath_prod, partinfo_NEWPATH_prod);
-                    opcHandler.sendOrder(order_NEWPROPS_prod);
-
-                    //Quando NEWPROPS estiver completa, envia a NewPath
-                    order_NEWPATH_prod.setNewPathOrder(target_newpath_prod, partinfo_NEWPATH_prod);
-                    opcHandler.sendOrder(order_NEWPATH_prod);
-
-                    //Adicionar esta order à lista de orders NEWPATH_prod running
-                    NEWPATH_prod_List.add(order_NEWPATH_prod);
+                //Se a order OUTWH_prod não for null ou estiver finished
+                if(order_OUTWH_prod!=null && opcHandler.isOrderFinished(order_OUTWH_prod) ){
+                    //Criar uma NEWPATH_pallet_remover para esta peça
+                    order_NEWPATH_pallet_remover = new Order();
+                    Part partinfo_newpath_pallet_remover = new Part(order_OUTWH_prod.getPart_info().getId(),
+                            path_newpath_pallet_remover,
+                            order_OUTWH_prod.getPart_info().getType_base(),
+                            order_OUTWH_prod.getPart_info().getType_part(),
+                            order_OUTWH_prod.getPart_info().getStore_position(),
+                            order_OUTWH_prod.getPart_info().getOp(),
+                            order_NEWPATH_pallet_remover.getId());
+                    order_NEWPATH_pallet_remover.setNewPathOrder(target_newpath_pallet_remover, partinfo_newpath_pallet_remover);
+                    //Enviar a ordem para a DT
+                    opcHandler.sendOrder(order_NEWPATH_pallet_remover);
 
                     //Se ainda existirem peças a serem retiradas do WH
                     if(removed_prod_pieces != sorted_production_pieces.size()) {
@@ -402,12 +386,12 @@ public class MesTask extends Task<Void> {
                         order_OUTWH_prod = new Order();
                         Piece p = sorted_production_pieces.get(removed_prod_pieces);
                         Part partinfo_outwh_prod = new Part(    p.getId(),
-                                                                path_outwh_prod,
-                                                                PartProps.Pallet,
-                                                                PartProps.getTypeValue(p.getType()),
-                                                                p.getWh_pos(), //alterar
-                                                                Aliases.NONE,
-                                                                order_OUTWH_prod.getId());
+                                path_outwh_prod,
+                                PartProps.Pallet,
+                                PartProps.getTypeValue(p.getType()),
+                                p.getWh_pos(), //alterar
+                                Aliases.NONE,
+                                order_OUTWH_prod.getId());
                         order_OUTWH_prod.setOutWhOrder(target_outwh_prod, p.getWh_pos(), partinfo_outwh_prod);
                         //Envia a ordem para a DT
                         opcHandler.sendOrder(order_OUTWH_prod);
@@ -419,76 +403,67 @@ public class MesTask extends Task<Void> {
                         //A OUTWH_prod passa a ser null
                         order_OUTWH_prod = null;
                     }
-
-
                 }
 
+                //Se a order NEWPATH_pallet_remover não for null ou estiver finished
+                if(order_NEWPATH_pallet_remover != null && opcHandler.isOrderFinished(order_NEWPATH_pallet_remover)) {
+
+                    //Criar uma NEWPATH_prod order para essa peça
+                    Order order_NEWPATH_prod = new Order();
+                    //Obter a Piece equivalente à Part (para obter a máquina alocada)
+                    Piece current_piece = null;
+                    for(Piece p : sorted_production_pieces){
+                        if(p.getId() == order_NEWPATH_pallet_remover.getPart_info().getId() ){
+                            current_piece = p;
+                            break;
+                        }
+                    }
+                    //Obter a transformação desejada
+                    int op = Aliases.getOpByFinalType(current_piece.getFinal_type());
+                    //Utilizar o path para essa máquina
+                    Part partinfo_NEWPATH_prod = new Part(current_piece.getId(),
+                            current_piece.getAllocated_machine().getPath(),
+                            order_NEWPATH_pallet_remover.getPart_info().getType_base(),
+                            order_NEWPATH_pallet_remover.getPart_info().getType_part(),
+                            order_NEWPATH_pallet_remover.getPart_info().getStore_position(),
+                            op,
+                            order_NEWPATH_prod.getId());
+                    order_NEWPATH_prod.setNewPathOrder(target_newpath_prod, partinfo_NEWPATH_prod);
+
+                    //Antes de enviar esta ordem é necessário enviar uma new_props
+                    Order order_NewProps_prod = new Order();
+                    order_NewProps_prod.setNewPropsOrder(target_newpath_prod, partinfo_NEWPATH_prod);
+                    opcHandler.sendOrder(order_NewProps_prod);
+
+                    //Enviar a order de newpath
+                    opcHandler.sendOrder(order_NEWPATH_prod);
+
+                    //Adicionar esta order à lista de orders NEWPATH_prod running
+                    NEWPATH_prod_List.add(order_NEWPATH_prod);
+                    //Coloca a NEWPATH_pallet_remover a null
+                    order_NEWPATH_pallet_remover = null;
+
+                    completed_prod_pieces++;
+                }
 
                 //Percorrer a lista de NEWPATH_prod orders running
-                for(int i = 0; i < NEWPATH_prod_List.size(); i++){
-                    //Se a order_INWH_prod ainda estiver ativa, ignorar
-                    if(order_INWH_prod!=null) break;
+                //Se a order estiver finished
+                //Cria uma EMIT_prod_scan order para essa peça
+                //Faz um random para decidir se essa peça é defeituosa ou não
+                //Se for defeituosa, usar o path para a saída
+                //Se nao, armazenar no WH
+                //Retira as infos da peça e atualiza na db
+                //Retira a order da lista de NEWPATH_prod
 
-                    Order curr_order = NEWPATH_prod_List.get(i);
-                    //Se a order estiver finished
-                    if(opcHandler.isOrderFinished(curr_order) ){
-                        //Faz um random para decidir se essa peça é defeituosa ou não
-                        Random random = new Random();
-                        double randomValue = random.nextDouble();
-
-                        //Se for defeituosa, usar o path para a saída, senão armazenar no WH
-                        int[] path_emit_prod;
-                        String status = "";
-                        if(randomValue <= defective_probability){
-                            path_emit_prod = path_emit_prod_2;
-                            status = "defective";
-                        }
-                        else{
-                            path_emit_prod = path_emit_prod_1;
-                            status = "produced";
-                        }
-
-                        order_INWH_prod = new Order();
-                        int raw_type = curr_order.getPart_info().getType_part();
-                        int op = curr_order.getPart_info().getOp();
-                        int final_type = PartProps.getFinalTypeValue(raw_type, op);
-                        Part partinfo_emit = new Part(  curr_order.getPart_info().getId(),
-                                                        path_emit_prod,
-                                                        PartProps.Pallet,
-                                                        final_type,
-                                                        curr_order.getPart_info().getId(), //alterar
-                                                        Aliases.NONE,
-                                                        order_INWH_prod.getId());
-
-                        order_INWH_prod.setEmitOrder(target_emit_prod, partinfo_emit);
-                        opcHandler.sendOrder(order_INWH_prod);
-
-                        dbHandler.updatePieceProduction(curr_order.getPart_info().getId(), status, current_week, curr_order.getPart_info().getId());
-
-                        NEWPATH_prod_List.remove(i);
-                        i--;
-                    }
-                }
-
-                //Se a order order_INWH_prod não for null ou estiver finished
-                if(order_INWH_prod != null && opcHandler.isOrderFinished(order_INWH_prod)) {
-                    //Se for a última peça da Production Order
-                    int lastPieceId = order_INWH_prod.getPart_info().getId();
-                    if(dbHandler.wasLastPieceFromProduction(lastPieceId) ){
-                        //Atualizar a PO
-                        dbHandler.setProductionCompletedByLastPiece(lastPieceId);
-                    }
-                    completed_prod_pieces++;
-
-                    //Limpar a order_INWH_prod
-                    order_INWH_prod = null;
-                }
+                //Percorrer a lista de EMIT_prod_scan
+                //Se a order estiver finished
+                //Se for a última peça ad Production Order
+                //Coloca como finished na DB
+                //Incrementa contador da peças armazenadas
+                //Remove a EMIT_prod_scan da lista
             }
 
-            ///Clear orders_array in DT
-            opcHandler.clearReadSigFlag();
 
-            //End the week
             Factory.getInstance().setSim_status("waiting_week_start");
             dbHandler.updateFactoryStatus();
         }

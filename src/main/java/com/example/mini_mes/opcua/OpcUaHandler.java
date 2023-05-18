@@ -23,6 +23,7 @@ public class OpcUaHandler {
     private String address = "opc.tcp://localhost:4840/";
     private String commandsNodePath = "|var|CODESYS Control Win V3 x64.Application.commands";
     private int namespaceIndex = 4;
+    private int order_feedback_size = 217;
 
     //Initialization methods
     private OpcUaHandler(){
@@ -98,7 +99,7 @@ public class OpcUaHandler {
     }
     public boolean isOrderFinished(Order order){
         String orders_out_node_path = commandsNodePath + ".orders_status_out";
-        for(int i=1; i<101; i++){
+        for(int i=1; i<order_feedback_size; i++){
             String curr_order_path = orders_out_node_path+"["+i+"].";
 
             int status = readInt(curr_order_path, "order_status");
@@ -114,6 +115,19 @@ public class OpcUaHandler {
     public boolean setNewDataFlag(boolean value){
         String path = commandsNodePath + ".orders.";
         writeBool(value, path, "new_data");
+        return true;
+    }
+    public boolean clearReadSigFlag(){
+        String path = commandsNodePath;
+        String variable = ".read_sig";
+
+        while(readBoolean(path, variable) ){
+            //wait until read_sig is false
+        }
+        writeBool(true, path, variable);
+        while(readBoolean(path, variable) ){
+            //wait until read_sig is false
+        }
         return true;
     }
 
