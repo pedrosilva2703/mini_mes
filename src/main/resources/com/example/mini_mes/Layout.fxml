@@ -16,8 +16,11 @@
                </children>
             </Pane>
             <Pane prefHeight="79.0" prefWidth="242.0" />
-            <Button fx:id="firstButton" mnemonicParsing="false" onMouseClicked="#onFirstButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="1" />
-            <Button fx:id="secondButton" mnemonicParsing="false" onMouseClicked="#onSecondButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="2" />
+            <Button fx:id="scheduleButton" mnemonicParsing="false" onMouseClicked="#onScheduleButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="Schedule" />
+            <Button fx:id="warehouseButton" mnemonicParsing="false" onMouseClicked="#onWarehouseButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="Warehouse" />
+            <Button fx:id="machineButton" mnemonicParsing="false" onMouseClicked="#onMachineButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="Machine Overview" />
+            <Button fx:id="historyButton" mnemonicParsing="false" onMouseClicked="#onHistoryButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="History Log" />
+            <Pane prefHeight="62.0" prefWidth="260.0" />
             <Pane prefHeight="62.0" prefWidth="260.0" />
             <Button fx:id="settingsButton" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClick" prefHeight="23.0" prefWidth="260.0" styleClass="menu-app-button" text="Settings" />
             <Pane prefHeight="62.0" prefWidth="242.0" />

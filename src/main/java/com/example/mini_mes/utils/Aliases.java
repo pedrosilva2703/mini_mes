@@ -18,7 +18,7 @@ public class Aliases {
     public static final int RAW             = 16;
     public static final int ALL             = -7;
 
-    public static int getOpByFinalType(String final_type){
+    public static int getOpValueByFinalType(String final_type){
         if( final_type.equals("GreenProductBase")
             || final_type.equals("BlueProductBase")
             || final_type.equals("MetalProductBase")){
@@ -26,6 +26,17 @@ public class Aliases {
         }
         else{
             return TO_LID;
+        }
+    }
+
+    public static String getOpStringByFinalType(String final_type){
+        if( final_type.equals("GreenProductBase")
+                || final_type.equals("BlueProductBase")
+                || final_type.equals("MetalProductBase")){
+            return "To Base";
+        }
+        else{
+            return "To Lid";
         }
     }
 }

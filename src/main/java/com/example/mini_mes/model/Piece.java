@@ -11,9 +11,12 @@ public class Piece {
     boolean safety_stock;
     Integer wh_pos;
 
-    int[] path = new int[50];
-    int current_location;
     Machine allocated_machine;
+    long start_production;
+
+    String client;
+    String operation;
+    String supplier;
 
     public Piece(Integer id, String type, String status, String final_type, Integer week_arrived, Integer week_produced, Float duration_production, boolean safety_stock, Integer wh_pos) {
         this.id = id;
@@ -27,8 +30,40 @@ public class Piece {
         this.wh_pos = wh_pos;
     }
 
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public String getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
+    }
+
     public Integer getId() {
         return id;
+    }
+
+    public long getStart_production() {
+        return start_production;
+    }
+
+    public void setStart_production(long start_production) {
+        this.start_production = start_production;
     }
 
     public void setId(Integer id) {

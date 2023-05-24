@@ -15,13 +15,21 @@ import java.io.IOException;
 public class LayoutController {
     @FXML private BorderPane mainPane;
 
-    @FXML private Button firstButton;
-    @FXML private Button secondButton;
+    @FXML private Button scheduleButton;
+    @FXML private Button warehouseButton;
+    @FXML private Button machineButton;
+    @FXML private Button historyButton;
     @FXML private Button settingsButton;
 
 
     @FXML
-    private void onFirstButtonClick(){
+    private void onScheduleButtonClick(){
+
+        loadPage("Schedule");
+        refreshButtonStates(scheduleButton);
+    }
+    @FXML
+    private void onWarehouseButtonClick(){
         Factory factory = Factory.getInstance();
         if( factory.isWaitingForDbConn() ){
             Alerts.showInfo("Please, connect to the database first.");
@@ -31,7 +39,17 @@ public class LayoutController {
         //refreshButtonStates(settingsButton);
     }
     @FXML
-    private void onSecondButtonClick(){
+    private void onMachineButtonClick(){
+        Factory factory = Factory.getInstance();
+        if( factory.isWaitingForDbConn() ){
+            Alerts.showInfo("Please, connect to the database first.");
+            return;
+        }
+        //loadPage("Settings");
+        //refreshButtonStates(settingsButton);
+    }
+    @FXML
+    private void onHistoryButtonClick(){
         Factory factory = Factory.getInstance();
         if( factory.isWaitingForDbConn() ){
             Alerts.showInfo("Please, connect to the database first.");
@@ -58,8 +76,10 @@ public class LayoutController {
     }
     private void refreshButtonStates(Button clickedButton){
         // Unselect all buttons
-        unselectButton(firstButton);
-        unselectButton(secondButton);
+        unselectButton(scheduleButton);
+        unselectButton(warehouseButton);
+        unselectButton(machineButton);
+        unselectButton(historyButton);
         unselectButton(settingsButton);
 
         // Select clicked button

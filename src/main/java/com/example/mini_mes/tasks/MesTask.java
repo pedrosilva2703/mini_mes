@@ -4,7 +4,6 @@ import com.example.mini_mes.database.DatabaseHandler;
 import com.example.mini_mes.model.*;
 import com.example.mini_mes.opcua.OpcUaHandler;
 import com.example.mini_mes.utils.Aliases;
-import com.example.mini_mes.utils.OrdersAliases;
 import com.example.mini_mes.utils.PartProps;
 import javafx.concurrent.Task;
 
@@ -18,6 +17,25 @@ public class MesTask extends Task<Void> {
     private void test(){
         System.out.println("aa");
     }
+    private int getAvailableWhPos(String piece_status){
+        ArrayList<Piece> pieces_in_wh = dbHandler.getPiecesByStatus(piece_status);
+        int wh_capacity = Factory.getInstance().getWarehouse_capacity();
+        int return_position;
+        boolean available;
+
+        for(return_position=1; return_position<=wh_capacity; return_position++){
+            available = true;
+            //Verify is this position is already occupied
+            for(Piece p : pieces_in_wh){
+                if(return_position==p.getWh_pos()) available=false;
+            }
+
+            if(available==true) break;
+        }
+
+        return return_position;
+
+    }
     @Override
     protected Void call() throws Exception{
         while(true){
@@ -27,9 +45,10 @@ public class MesTask extends Task<Void> {
                 dbHandler.retrieveFactoryStatus();
             }
             //Week was started by mini-ERP
-            if(false) break;
+
 
             Factory.getInstance().incrementWeek();
+            if(true) break;
             int current_week = Factory.getInstance().getCurrent_week();
 
             OpcUaHandler opcHandler = OpcUaHandler.getInstance();
@@ -115,11 +134,13 @@ public class MesTask extends Task<Void> {
             if(!inbound_pieces.isEmpty() ){
                 order_emit = new Order();
                 Piece p = inbound_pieces.get(0);
+                int available_wh_pos = getAvailableWhPos("arrived");
+
                 Part partinfo_emit = new Part(  p.getId(),
                                             path_in_1,
                                             PartProps.Pallet,
                                             PartProps.getTypeValue(p.getType()),
-                                            p.getId(), //alterar
+                                            available_wh_pos,
                                             Aliases.NONE,
                                             order_emit.getId());
                 order_emit.setEmitOrder(target_in_1, partinfo_emit);
@@ -129,7 +150,7 @@ public class MesTask extends Task<Void> {
                 emitted_pieces++;
 
                 //Atualiza info na db
-                dbHandler.updatePieceInbound(p.getId(), current_week, p.getId() );
+                dbHandler.updatePieceInbound(p.getId(), current_week, available_wh_pos );
             }
 
             //while ainda existirem peças a serem enviadas OU a serem armazenadas
@@ -236,11 +257,13 @@ public class MesTask extends Task<Void> {
                         //Fazer uma nova EMIT order com a próxima peça
                         order_emit = new Order();
                         Piece p = inbound_pieces.get(emitted_pieces);
+                        int available_wh_pos = getAvailableWhPos("arrived");
+
                         Part partinfo_emit = new Part(  p.getId(),
                                                         path_in_1,
                                                         PartProps.Pallet,
                                                         PartProps.getTypeValue(p.getType()),
-                                                    p.getId(), //alterar
+                                                        available_wh_pos,
                                                         Aliases.NONE,
                                                         order_emit.getId());
                         order_emit.setEmitOrder(target_in_1, partinfo_emit);
@@ -250,7 +273,7 @@ public class MesTask extends Task<Void> {
                         emitted_pieces++;
 
                         //Atualiza info na db
-                        dbHandler.updatePieceInbound(p.getId(), current_week, p.getId() );
+                        dbHandler.updatePieceInbound(p.getId(), current_week, available_wh_pos );
                     }
                     else{
                         //A EMIT passa a ser null
@@ -337,6 +360,7 @@ public class MesTask extends Task<Void> {
                 //Coloca os parâmetros da primeira peça
                 order_OUTWH_prod = new Order();
                 Piece p = sorted_production_pieces.get(0);
+
                 Part partinfo_outwh_prod = new Part(    p.getId(),
                                                         path_outwh_prod,
                                                         PartProps.Pallet,
@@ -360,7 +384,7 @@ public class MesTask extends Task<Void> {
             //Enquanto o contador de peças processadas armazenadas != do numero total de peças
             while(sorted_production_pieces.size() != completed_prod_pieces){
 
-                //Se a order NEWPATH_pallet_remover não for null ou estiver finished
+                //Se a order order_OUTWH_prod não for null ou estiver finished
                 if(order_OUTWH_prod != null && opcHandler.isOrderFinished(order_OUTWH_prod)) {
 
                     //Criar uma NEWPATH_prod order para essa peça
@@ -373,8 +397,12 @@ public class MesTask extends Task<Void> {
                             break;
                         }
                     }
+
+                    //Guardar o tempo a que iniciou a produçao
+                    current_piece.setStart_production(System.currentTimeMillis());
+
                     //Obter a transformação desejada
-                    int op = Aliases.getOpByFinalType(current_piece.getFinal_type());
+                    int op = Aliases.getOpValueByFinalType(current_piece.getFinal_type());
                     //Utilizar o path para essa máquina
                     Part partinfo_NEWPATH_prod = new Part(  current_piece.getId(),
                                                             current_piece.getAllocated_machine().getPath(),
@@ -414,7 +442,6 @@ public class MesTask extends Task<Void> {
                         //Incrementa contador de peças retiradas
                         removed_prod_pieces++;
                     }
-                    //Senao
                     else {
                         //A OUTWH_prod passa a ser null
                         order_OUTWH_prod = null;
@@ -452,18 +479,30 @@ public class MesTask extends Task<Void> {
                         int raw_type = curr_order.getPart_info().getType_part();
                         int op = curr_order.getPart_info().getOp();
                         int final_type = PartProps.getFinalTypeValue(raw_type, op);
+                        int available_wh_pos = getAvailableWhPos("produced");
+
                         Part partinfo_emit = new Part(  curr_order.getPart_info().getId(),
                                                         path_emit_prod,
                                                         PartProps.Pallet,
                                                         final_type,
-                                                        curr_order.getPart_info().getId(), //alterar
+                                                        available_wh_pos,
                                                         Aliases.NONE,
                                                         order_INWH_prod.getId());
 
                         order_INWH_prod.setEmitOrder(target_emit_prod, partinfo_emit);
                         opcHandler.sendOrder(order_INWH_prod);
 
-                        dbHandler.updatePieceProduction(curr_order.getPart_info().getId(), status, current_week, curr_order.getPart_info().getId());
+                        //Obter a Piece equivalente à Part (para obter o tempo inicial)
+                        float duration_production = 0;
+                        for(Piece p : sorted_production_pieces){
+                            if(p.getId() == order_INWH_prod.getPart_info().getId() ){
+                                duration_production = (System.currentTimeMillis()-p.getStart_production())/1000;
+                                System.out.println(duration_production);
+                                break;
+                            }
+                        }
+
+                        dbHandler.updatePieceProduction(curr_order.getPart_info().getId(), status, current_week, available_wh_pos, duration_production);
 
                         NEWPATH_prod_List.remove(i);
                         i--;

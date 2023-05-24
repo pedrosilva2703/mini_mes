@@ -13,4 +13,7 @@ module com.example.mini_mes {
     exports com.example.mini_mes;
     exports com.example.mini_mes.controllers;
     opens com.example.mini_mes.controllers to javafx.fxml;
+
+    exports com.example.mini_mes.model;
+    opens com.example.mini_mes.model to javafx.fxml;
 }

@@ -4,7 +4,6 @@ import com.example.mini_mes.database.DatabaseHandler;
 import com.example.mini_mes.model.*;
 import com.example.mini_mes.opcua.OpcUaHandler;
 import com.example.mini_mes.utils.Aliases;
-import com.example.mini_mes.utils.OrdersAliases;
 import com.example.mini_mes.utils.PartProps;
 import javafx.concurrent.Task;
 
@@ -419,7 +418,7 @@ public class BackupWithStarTrek extends Task<Void> {
                         }
                     }
                     //Obter a transformação desejada
-                    int op = Aliases.getOpByFinalType(current_piece.getFinal_type());
+                    int op = Aliases.getOpValueByFinalType(current_piece.getFinal_type());
                     //Utilizar o path para essa máquina
                     Part partinfo_NEWPATH_prod = new Part(current_piece.getId(),
                             current_piece.getAllocated_machine().getPath(),
