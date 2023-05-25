@@ -5,14 +5,21 @@ import com.example.mini_mes.model.Factory;
 import com.example.mini_mes.utils.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LayoutController {
+public class LayoutController{
+    ScheduleController scheduleController;
+    WarehouseController warehouseController;
+    HistoryController historyController;
+
     @FXML private BorderPane mainPane;
 
     @FXML private Button scheduleButton;
@@ -22,9 +29,15 @@ public class LayoutController {
     @FXML private Button settingsButton;
 
 
+
     @FXML
     private void onScheduleButtonClick(){
-
+        Factory factory = Factory.getInstance();
+        if( factory.isWaitingForDbConn() ){
+            Alerts.showInfo("Please, connect to the database first.");
+            return;
+        }
+        interruptActiveThreads();
         loadPage("Schedule");
         refreshButtonStates(scheduleButton);
     }
@@ -35,8 +48,9 @@ public class LayoutController {
             Alerts.showInfo("Please, connect to the database first.");
             return;
         }
-        //loadPage("Settings");
-        //refreshButtonStates(settingsButton);
+        interruptActiveThreads();
+        loadPage("Warehouse");
+        refreshButtonStates(warehouseButton);
     }
     @FXML
     private void onMachineButtonClick(){
@@ -55,24 +69,38 @@ public class LayoutController {
             Alerts.showInfo("Please, connect to the database first.");
             return;
         }
-        //loadPage("Settings");
-        //refreshButtonStates(settingsButton);
+        interruptActiveThreads();
+        loadPage("History");
+        refreshButtonStates(historyButton);
     }
     @FXML
     private void onSettingsButtonClick(){
+        interruptActiveThreads();
         loadPage("Settings");
         refreshButtonStates(settingsButton);
         return;
     }
 
-
+    private void interruptActiveThreads(){
+        if(scheduleController!=null){
+            scheduleController.interruptRefreshThread();
+        }
+        if(warehouseController!=null){
+            warehouseController.interruptRefreshThread();
+        }
+        if(historyController!=null){
+            historyController.interruptRefreshThread();
+        }
+    }
     private void unselectButton(Button b){
         b.getStyleClass().remove("menu-app-button-selected");
         b.getStyleClass().add("menu-app-button");
+        b.setDisable(false);
     }
     private void selectButton(Button b){
         b.getStyleClass().remove("menu-app-button");
         b.getStyleClass().add("menu-app-button-selected");
+        b.setDisable(true);
     }
     private void refreshButtonStates(Button clickedButton){
         // Unselect all buttons
@@ -90,11 +118,27 @@ public class LayoutController {
         try {
             FXMLLoader contentLoader = new FXMLLoader(Launcher.class.getResource(page+".fxml"));
             AnchorPane content = contentLoader.load();
+
             // Add the navigation menu to the left side of the BorderPane
             mainPane.setCenter(content);
+
+            if(page.equals("Schedule") ){
+                ScheduleController scheduleController = contentLoader.getController();
+                this.scheduleController = scheduleController;
+            }
+            if(page.equals("Warehouse") ){
+                WarehouseController warehouseController = contentLoader.getController();
+                this.warehouseController = warehouseController;
+            }
+            if(page.equals("History") ){
+                HistoryController historyController = contentLoader.getController();
+                this.historyController = historyController;
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 }

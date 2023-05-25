@@ -17,6 +17,7 @@ public class Piece {
     String client;
     String operation;
     String supplier;
+    Integer week_shipped;
 
     public Piece(Integer id, String type, String status, String final_type, Integer week_arrived, Integer week_produced, Float duration_production, boolean safety_stock, Integer wh_pos) {
         this.id = id;
@@ -28,6 +29,14 @@ public class Piece {
         this.duration_production = duration_production;
         this.safety_stock = safety_stock;
         this.wh_pos = wh_pos;
+    }
+
+    public Integer getWeek_shipped() {
+        return week_shipped;
+    }
+
+    public void setWeek_shipped(Integer week_shipped) {
+        this.week_shipped = week_shipped;
     }
 
     public String getClient() {

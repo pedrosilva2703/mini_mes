@@ -56,6 +56,13 @@ public class SettingsController implements Initializable {
         }
 
         saveDbPreferences(url, port, databaseName, schema, username, password);
+
+        dbHandler = DatabaseHandler.getInstance();
+        MesTask mesTask = new MesTask();
+        Thread thread = new Thread(mesTask);
+        thread.setDaemon(true);
+        thread.start();
+
         updateInputsState();
     }
 
@@ -71,12 +78,6 @@ public class SettingsController implements Initializable {
         else{
             disableDbInputs();
             dbHandler = DatabaseHandler.getInstance();
-
-            MesTask mesTask = new MesTask();
-
-            Thread thread = new Thread(mesTask);
-            thread.setDaemon(true);
-            thread.start();
         }
     }
 

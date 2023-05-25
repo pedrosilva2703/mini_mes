@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ScheduleController implements Initializable {
+public class HistoryController implements Initializable {
     DatabaseHandler dbHandler = DatabaseHandler.getInstance();
     Factory factory = Factory.getInstance();
 
@@ -24,12 +24,12 @@ public class ScheduleController implements Initializable {
 
     @FXML private TableView<Piece> tv_EO;
     @FXML private TableColumn<Piece, String> tc_EO_client;
-    @FXML private TableColumn<Piece, String> tc_EO_status;
+    @FXML private TableColumn<Piece, Integer> tc_EO_week;
     @FXML private TableColumn<Piece, String> tc_EO_supplier;
     @FXML private TableColumn<Piece, String> tc_EO_type;
     @FXML private TableView<Piece> tv_IO;
     @FXML private TableColumn<Piece, String> tc_IO_client;
-    @FXML private TableColumn<Piece, String> tc_IO_status;
+    @FXML private TableColumn<Piece, Integer> tc_IO_week;
     @FXML private TableColumn<Piece, String> tc_IO_supplier;
     @FXML private TableColumn<Piece, String> tc_IO_type;
     @FXML private TableView<Piece> tv_PO;
@@ -38,6 +38,7 @@ public class ScheduleController implements Initializable {
     @FXML private TableColumn<Piece, String> tc_PO_operation;
     @FXML private TableColumn<Piece, String> tc_PO_status;
     @FXML private TableColumn<Piece, String> tc_PO_type;
+    @FXML private TableColumn<Piece, Integer> tc_PO_week;
 
     ArrayList<Piece> ioList;
     ArrayList<Piece> poList;
@@ -54,7 +55,7 @@ public class ScheduleController implements Initializable {
             while (!Thread.currentThread().isInterrupted()) {
                 updateUI();
 
-                System.out.println("Schedule executing");
+                System.out.println("History executing");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -69,10 +70,10 @@ public class ScheduleController implements Initializable {
 
     void updateUI(){
         //Retrieve data from database to lists
-        ioList = dbHandler.getInboundPiecesByWeek(factory.getCurrent_week());
-        poList = dbHandler.getProductionPiecesByWeek(factory.getCurrent_week());
-        eoList = dbHandler.getExpeditionPiecesByWeek(factory.getCurrent_week());
-        System.out.println(factory.getCurrent_week());
+        ioList = dbHandler.getInboundPiecesHistory(factory.getCurrent_week());
+        poList = dbHandler.getProductionPiecesHistory(factory.getCurrent_week());
+        eoList = dbHandler.getExpeditionPiecesHistory(factory.getCurrent_week());
+
         //Clear tables and add new data
         tv_IO.getItems().clear();
         if( ioList != null ){
@@ -100,7 +101,7 @@ public class ScheduleController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tc_IO_client.setCellValueFactory(new PropertyValueFactory<Piece, String>("client") );
-        tc_IO_status.setCellValueFactory(new PropertyValueFactory<Piece, String>("status") );
+        tc_IO_week.setCellValueFactory(new PropertyValueFactory<Piece, Integer>("week_arrived") );
         tc_IO_supplier.setCellValueFactory(new PropertyValueFactory<Piece, String>("supplier") );;
         tc_IO_type.setCellValueFactory(new PropertyValueFactory<Piece, String>("type") );
 
@@ -109,9 +110,10 @@ public class ScheduleController implements Initializable {
         tc_PO_operation.setCellValueFactory(new PropertyValueFactory<Piece, String>("operation") );;
         tc_PO_type.setCellValueFactory(new PropertyValueFactory<Piece, String>("type") );
         tc_PO_duration.setCellValueFactory(new PropertyValueFactory<Piece, Double>("duration_production") );
+        tc_PO_week.setCellValueFactory(new PropertyValueFactory<Piece, Integer>("week_produced") );
 
         tc_EO_client.setCellValueFactory(new PropertyValueFactory<Piece, String>("client") );
-        tc_EO_status.setCellValueFactory(new PropertyValueFactory<Piece, String>("status") );
+        tc_EO_week.setCellValueFactory(new PropertyValueFactory<Piece, Integer>("week_shipped") );
         tc_EO_supplier.setCellValueFactory(new PropertyValueFactory<Piece, String>("supplier") );;
         tc_EO_type.setCellValueFactory(new PropertyValueFactory<Piece, String>("type") );
 

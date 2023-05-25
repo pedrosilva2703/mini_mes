@@ -12,13 +12,20 @@ import java.util.Random;
 
 public class MesTask extends Task<Void> {
     DatabaseHandler dbHandler = DatabaseHandler.getInstance();
+    
+    private int getAvailableRawWhPos(){
+        ArrayList<Piece> pieces_in_wh = dbHandler.getPiecesByStatus("storing");
+        pieces_in_wh.addAll(dbHandler.getPiecesByStatus("stored"));
 
-
-    private void test(){
-        System.out.println("aa");
+        return getAvailableWhPos(pieces_in_wh);
     }
-    private int getAvailableWhPos(String piece_status){
-        ArrayList<Piece> pieces_in_wh = dbHandler.getPiecesByStatus(piece_status);
+    private int getAvailableFinalWhPos(){
+        ArrayList<Piece> pieces_in_wh = dbHandler.getPiecesByStatus("produced");
+
+        return getAvailableWhPos(pieces_in_wh);
+    }
+
+    private int getAvailableWhPos(ArrayList<Piece> pieces_in_wh){
         int wh_capacity = Factory.getInstance().getWarehouse_capacity();
         int return_position;
         boolean available;
@@ -34,8 +41,8 @@ public class MesTask extends Task<Void> {
         }
 
         return return_position;
-
     }
+
     @Override
     protected Void call() throws Exception{
         while(true){
@@ -48,7 +55,7 @@ public class MesTask extends Task<Void> {
 
 
             Factory.getInstance().incrementWeek();
-            if(true) break;
+            if(false) break;
             int current_week = Factory.getInstance().getCurrent_week();
 
             OpcUaHandler opcHandler = OpcUaHandler.getInstance();
@@ -100,6 +107,7 @@ public class MesTask extends Task<Void> {
 
                 //Atualiza info na db
                 dbHandler.updatePieceExpedition(p.getId());
+                dbHandler.updatePieceStatus(p.getId(), "shipping");
             }
 
 
@@ -134,7 +142,7 @@ public class MesTask extends Task<Void> {
             if(!inbound_pieces.isEmpty() ){
                 order_emit = new Order();
                 Piece p = inbound_pieces.get(0);
-                int available_wh_pos = getAvailableWhPos("arrived");
+                int available_wh_pos = getAvailableRawWhPos();
 
                 Part partinfo_emit = new Part(  p.getId(),
                                             path_in_1,
@@ -151,6 +159,7 @@ public class MesTask extends Task<Void> {
 
                 //Atualiza info na db
                 dbHandler.updatePieceInbound(p.getId(), current_week, available_wh_pos );
+                dbHandler.updatePieceStatus(p.getId(), "storing");
             }
 
             //while ainda existirem peças a serem enviadas OU a serem armazenadas
@@ -164,6 +173,7 @@ public class MesTask extends Task<Void> {
                     if(opcHandler.isOrderFinished(curr_order) ){
                         //Se todas as peças da EO estiverem delivered
                         int lastPieceId = curr_order.getPart_info().getId();
+                        dbHandler.updatePieceStatus(lastPieceId, "shipped");
                         if(dbHandler.wasLastPieceFromExpedition(lastPieceId) ){
                             //Atualizar a EO
                             dbHandler.setExpeditionCompletedByLastPiece(lastPieceId);
@@ -210,6 +220,7 @@ public class MesTask extends Task<Void> {
 
                         //Atualiza info na db
                         dbHandler.updatePieceExpedition(p.getId());
+                        dbHandler.updatePieceStatus(p.getId(), "shipping");
                     } else {
                         //A OUTWH passa a ser null
                         order_emit = null;
@@ -223,6 +234,7 @@ public class MesTask extends Task<Void> {
                     if(opcHandler.isOrderFinished(curr_order) ){
                         //Se todas as peças da IO estiverem armazenadas
                         int lastPieceId = curr_order.getPart_info().getId();
+                        dbHandler.updatePieceStatus(lastPieceId, "stored");
                         if(dbHandler.wasLastPieceFromInbound(lastPieceId) ){
                             //Atualizar a IO
                             dbHandler.setInboundCompletedByLastPiece(lastPieceId);
@@ -257,7 +269,7 @@ public class MesTask extends Task<Void> {
                         //Fazer uma nova EMIT order com a próxima peça
                         order_emit = new Order();
                         Piece p = inbound_pieces.get(emitted_pieces);
-                        int available_wh_pos = getAvailableWhPos("arrived");
+                        int available_wh_pos = getAvailableRawWhPos();
 
                         Part partinfo_emit = new Part(  p.getId(),
                                                         path_in_1,
@@ -274,6 +286,7 @@ public class MesTask extends Task<Void> {
 
                         //Atualiza info na db
                         dbHandler.updatePieceInbound(p.getId(), current_week, available_wh_pos );
+                        dbHandler.updatePieceStatus(p.getId(), "storing");
                     }
                     else{
                         //A EMIT passa a ser null
@@ -424,6 +437,8 @@ public class MesTask extends Task<Void> {
                     //Adicionar esta order à lista de orders NEWPATH_prod running
                     NEWPATH_prod_List.add(order_NEWPATH_prod);
 
+                    dbHandler.updatePieceStatus(current_piece.getId(), "producing");
+
                     //Se ainda existirem peças a serem retiradas do WH
                     if(removed_prod_pieces != sorted_production_pieces.size()) {
                         //Fazer nova OUTWH_prod
@@ -479,7 +494,7 @@ public class MesTask extends Task<Void> {
                         int raw_type = curr_order.getPart_info().getType_part();
                         int op = curr_order.getPart_info().getOp();
                         int final_type = PartProps.getFinalTypeValue(raw_type, op);
-                        int available_wh_pos = getAvailableWhPos("produced");
+                        int available_wh_pos = getAvailableFinalWhPos();
 
                         Part partinfo_emit = new Part(  curr_order.getPart_info().getId(),
                                                         path_emit_prod,
