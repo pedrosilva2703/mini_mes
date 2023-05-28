@@ -22,6 +22,9 @@
       <Text layoutX="40.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="Schema" />
       <TextField fx:id="tf_name" layoutX="119.0" layoutY="204.0" prefHeight="25.0" prefWidth="280.0" />
       <TextField fx:id="tf_schema" layoutX="119.0" layoutY="234.0" prefHeight="25.0" prefWidth="280.0" />
-      <Button fx:id="btn_TEST" layoutX="421.0" layoutY="390.0" mnemonicParsing="false" onMouseClicked="#onMesTestButtonClicked" styleClass="regular-button" text="MES TEST" />
+      <Button fx:id="btn_load" layoutX="119.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#onLoadButtonClicked" styleClass="regular-button" text="Load file" />
+      <Text layoutX="40.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sub-title" text="Layout Configuration" />
+      <Text layoutX="40.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="normal-text" text="File path" />
+      <TextField fx:id="tf_file" layoutX="119.0" layoutY="358.0" prefHeight="25.0" prefWidth="280.0" />
    </children>
 </AnchorPane>

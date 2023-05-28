@@ -7,6 +7,8 @@ module com.example.mini_mes {
     requires java.prefs;
     requires org.eclipse.milo.opcua.sdk.client;
     requires org.eclipse.milo.opcua.stack.core;
+    requires java.xml.bind;
+    requires org.eclipse.persistence.moxy;
 
 
     opens com.example.mini_mes to javafx.fxml;
@@ -15,5 +17,6 @@ module com.example.mini_mes {
     opens com.example.mini_mes.controllers to javafx.fxml;
 
     exports com.example.mini_mes.model;
-    opens com.example.mini_mes.model to javafx.fxml;
+    opens com.example.mini_mes.model;
+
 }

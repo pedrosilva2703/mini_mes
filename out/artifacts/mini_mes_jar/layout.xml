@@ -1,0 +1,19 @@
+<equipmentList>
+    <equipment>
+        <id_dt>1</id_dt>
+        <equipment_type>TypeA</equipment_type>
+        <neighbourIdList>
+            <id>2</id>
+            <id>3</id>
+            <id>4</id>
+        </neighbourIdList>
+    </equipment>
+    <equipment>
+        <id_dt>2</id_dt>
+        <equipment_type>TypeB</equipment_type>
+        <neighbourIdList>
+            <id>1</id>
+            <id>3</id>
+        </neighbourIdList>
+    </equipment>
+</equipmentList>

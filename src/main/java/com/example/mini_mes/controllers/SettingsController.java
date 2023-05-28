@@ -2,9 +2,12 @@ package com.example.mini_mes.controllers;
 
 import com.example.mini_mes.Launcher;
 import com.example.mini_mes.database.DatabaseHandler;
+import com.example.mini_mes.model.Equipment;
+import com.example.mini_mes.model.EquipmentList;
 import com.example.mini_mes.model.Factory;
 import com.example.mini_mes.tasks.MesTask;
 import com.example.mini_mes.utils.Alerts;
+import com.example.mini_mes.utils.Verifier;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +17,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.jaxb.JAXBContextFactory;
 
 public class SettingsController implements Initializable {
     Factory factory = Factory.getInstance();
@@ -67,7 +77,30 @@ public class SettingsController implements Initializable {
     }
 
     @FXML
-    private void onMesTestButtonClicked(){
+    private void onLoadButtonClicked(){
+        EquipmentList equipmentList;
+        try {
+            System.setProperty(JAXBContext.JAXB_CONTEXT_FACTORY, JAXBContextFactory.class.getName());
+            File file = new File("layout.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(EquipmentList.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            equipmentList = (EquipmentList) unmarshaller.unmarshal(file);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            Alerts.showError("XML file parsing error");
+            return;
+        }
+
+        String layoutVerifierResult = Verifier.isEquipmentListValid(equipmentList);
+        if(!layoutVerifierResult.equals("OK") ){
+            Alerts.showError(layoutVerifierResult);
+            return;
+        }
+
+
+
+
     }
 
     // Manage input textfields and buttons
