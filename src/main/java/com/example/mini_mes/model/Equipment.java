@@ -1,5 +1,7 @@
 package com.example.mini_mes.model;
 
+import com.example.mini_mes.utils.EquipmentTravelCost;
+
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 
@@ -38,7 +40,10 @@ public class Equipment {
         return neighbourIdList;
     }
 
+
     public void setNeighbourIdList(ArrayList<Integer> neighbourIdList) {
         this.neighbourIdList = neighbourIdList;
     }
+
+
 }

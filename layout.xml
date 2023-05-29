@@ -137,7 +137,6 @@
         <id_dt>20</id_dt>
         <equipment_type>Conveyor6m</equipment_type>
         <neighbourIdList>
-            <id>19</id>
             <id>27</id>
         </neighbourIdList>
     </equipment>
@@ -172,11 +171,17 @@
         </neighbourIdList>
     </equipment>
     <equipment>
-        <id_dt>26</id_dt>
+        <id_dt>25</id_dt>
         <equipment_type>BothProducer</equipment_type>
         <neighbourIdList>
-            <id>24</id>
             <id>26</id>
+        </neighbourIdList>
+    </equipment>
+    <equipment>
+        <id_dt>26</id_dt>
+        <equipment_type>Conveyor2m</equipment_type>
+        <neighbourIdList>
+            <id>27</id>
         </neighbourIdList>
     </equipment>
 

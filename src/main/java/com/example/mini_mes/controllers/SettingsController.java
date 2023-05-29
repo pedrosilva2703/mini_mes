@@ -2,11 +2,13 @@ package com.example.mini_mes.controllers;
 
 import com.example.mini_mes.Launcher;
 import com.example.mini_mes.database.DatabaseHandler;
+import com.example.mini_mes.dijkstra.Dijkstra;
 import com.example.mini_mes.model.Equipment;
 import com.example.mini_mes.model.EquipmentList;
 import com.example.mini_mes.model.Factory;
 import com.example.mini_mes.tasks.MesTask;
 import com.example.mini_mes.utils.Alerts;
+import com.example.mini_mes.utils.EquipmentTravelCost;
 import com.example.mini_mes.utils.Verifier;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -20,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -97,9 +100,16 @@ public class SettingsController implements Initializable {
             Alerts.showError(layoutVerifierResult);
             return;
         }
+        /*
+        //Dijkstra
+        ArrayList<Integer> test = Dijkstra.shortestPath(equipmentList, 1, 8);
+
+        for(int i : test){
+            System.out.println(i);
+        }*/
 
 
-
+        Dijkstra.calculateShortestPath(equipmentList, 1, 5);
 
     }
 
