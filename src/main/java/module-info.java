@@ -18,5 +18,7 @@ module com.example.mini_mes {
 
     exports com.example.mini_mes.model;
     opens com.example.mini_mes.model;
+    exports com.example.mini_mes.dijkstra;
+    opens com.example.mini_mes.dijkstra;
 
 }

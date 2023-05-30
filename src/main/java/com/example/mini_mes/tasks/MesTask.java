@@ -1,6 +1,7 @@
 package com.example.mini_mes.tasks;
 
 import com.example.mini_mes.database.DatabaseHandler;
+import com.example.mini_mes.dijkstra.PathManager;
 import com.example.mini_mes.model.*;
 import com.example.mini_mes.opcua.OpcUaHandler;
 import com.example.mini_mes.utils.Aliases;
@@ -59,7 +60,7 @@ public class MesTask extends Task<Void> {
             int current_week = Factory.getInstance().getCurrent_week();
 
             OpcUaHandler opcHandler = OpcUaHandler.getInstance();
-
+            PathManager pM = PathManager.getInstance();
             //------------------- Expedition Orders setup -------------------//
 
             //Definir os paths e targets a serem usados
@@ -113,12 +114,18 @@ public class MesTask extends Task<Void> {
 
             //------------------- Inbound Orders setup -------------------//
             //Definir os paths e targets a serem usados
+
             int[] path_in_1 = new int[50];
             int[] path_in_2 = new int[50];
             path_in_1[0] = 2; path_in_1[1] = -1;
             path_in_2[0] = 3; path_in_2[1] = -1;
             int target_in_1 = 1;
             int target_in_2 = 2;
+            path_in_1 = pM.getInboundEmitToBuffer().getPath();
+            target_in_1 = pM.getInboundEmitToBuffer().getTarget();
+
+            path_in_2 = pM.getInboundBufferToWh().getPath();
+            target_in_2 = pM.getInboundBufferToWh().getTarget();
 
             //Obter uma lista de IO da semana atual
             ArrayList<InboundOrder> IO_list = dbHandler.getInboundOrdersByWeek(current_week);

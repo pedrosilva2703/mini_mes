@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class Dijkstra {
 
-    public static void calculateShortestPath(EquipmentList list, int sourceId, int destinationId) {
+    public static PathCost calculateShortestPath(EquipmentList list, int sourceId, int destinationId) {
         ArrayList<Equipment> equipmentList = list.getEquipmentList();
 
         int[][] costMatrix = costMatrixBuilder(equipmentList);
@@ -61,7 +61,7 @@ public class Dijkstra {
 
         //Build shortest path sequence using the previousVertex array
         ArrayList<Integer> path = new ArrayList<>();
-        //Starts with the destPos
+        //Starting with the destPos
         int currentVertex = destPos;
         while(currentVertex != -1){
             path.add(0, currentVertex);
@@ -74,14 +74,11 @@ public class Dijkstra {
         for(int i :path){
             int id = equipmentList.get(i).getId_dt();
             pathIds.add(id);
-            System.out.println(id);
 
             totalCost += EquipmentTravelCost.getEquipmentTravelCost(equipmentList.get(i).getEquipment_type());
         }
 
-        System.out.println(totalCost);
-
-
+        return new PathCost(pathIds, totalCost);
 
     }
 

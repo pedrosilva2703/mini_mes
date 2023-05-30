@@ -3,6 +3,7 @@ package com.example.mini_mes.controllers;
 import com.example.mini_mes.Launcher;
 import com.example.mini_mes.database.DatabaseHandler;
 import com.example.mini_mes.dijkstra.Dijkstra;
+import com.example.mini_mes.dijkstra.PathManager;
 import com.example.mini_mes.model.Equipment;
 import com.example.mini_mes.model.EquipmentList;
 import com.example.mini_mes.model.Factory;
@@ -109,7 +110,7 @@ public class SettingsController implements Initializable {
         }*/
 
 
-        Dijkstra.calculateShortestPath(equipmentList, 1, 5);
+        PathManager.getInstance().initialize(equipmentList);
 
     }
 

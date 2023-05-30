@@ -26,4 +26,12 @@ public class EquipmentList {
     public void setEquipmentList(ArrayList<Equipment> equipmentList) {
         this.equipmentList = equipmentList;
     }
+
+    public int getEquipmentIdByType(String type){
+        int id = -1;
+        for(Equipment eq : equipmentList){
+            if(eq.getEquipment_type().equals(type) ) id = eq.getId_dt();
+        }
+        return id;
+    }
 }
