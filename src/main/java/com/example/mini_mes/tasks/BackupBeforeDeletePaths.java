@@ -1,5 +1,6 @@
 package com.example.mini_mes.tasks;
 
+
 import com.example.mini_mes.database.DatabaseHandler;
 import com.example.mini_mes.dijkstra.PathManager;
 import com.example.mini_mes.model.*;
@@ -11,9 +12,9 @@ import javafx.concurrent.Task;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MesTask extends Task<Void> {
+public class BackupBeforeDeletePaths extends Task<Void> {
     DatabaseHandler dbHandler = DatabaseHandler.getInstance();
-    
+
     private int getAvailableRawWhPos(){
         ArrayList<Piece> pieces_in_wh = dbHandler.getPiecesByStatus("storing");
         pieces_in_wh.addAll(dbHandler.getPiecesByStatus("stored"));
@@ -64,11 +65,12 @@ public class MesTask extends Task<Void> {
             //------------------- Expedition Orders setup -------------------//
 
             //Definir os paths e targets a serem usados
-            int[] path_out_1 = pM.getExpeditionWhToWhExit().getPath();
-            int target_out_1 = pM.getExpeditionWhToWhExit().getTarget();
-
-            int[] path_out_2 = pM.getExpeditionWhExitToRemover().getPath();
-            int target_out_2 = pM.getExpeditionWhExitToRemover().getTarget();
+            int[] path_out_1 = new int[50];
+            int[] path_out_2 = new int[50];
+            path_out_1[0] = 35; path_out_1[1] = -1;
+            path_out_2[0] = 36; path_out_2[1] = 37; path_out_2[2] = -1;
+            int target_out_1 = 34;
+            int target_out_2 = 35;
 
             //Obter uma lista de EO da semana atual
             ArrayList<ExpeditionOrder> EO_list = dbHandler.getExpeditionOrdersByWeek(current_week);
@@ -113,11 +115,18 @@ public class MesTask extends Task<Void> {
 
             //------------------- Inbound Orders setup -------------------//
             //Definir os paths e targets a serem usados
-            int[] path_in_1 = pM.getInboundEmitToBuffer().getPath();
-            int target_in_1 = pM.getInboundEmitToBuffer().getTarget();
 
-            int[] path_in_2 = pM.getInboundBufferToWh().getPath();
-            int target_in_2 = pM.getInboundBufferToWh().getTarget();
+            int[] path_in_1 = new int[50];
+            int[] path_in_2 = new int[50];
+            path_in_1[0] = 2; path_in_1[1] = -1;
+            path_in_2[0] = 3; path_in_2[1] = -1;
+            int target_in_1 = 1;
+            int target_in_2 = 2;
+            path_in_1 = pM.getInboundEmitToBuffer().getPath();
+            target_in_1 = pM.getInboundEmitToBuffer().getTarget();
+
+            path_in_2 = pM.getInboundBufferToWh().getPath();
+            target_in_2 = pM.getInboundBufferToWh().getTarget();
 
             //Obter uma lista de IO da semana atual
             ArrayList<InboundOrder> IO_list = dbHandler.getInboundOrdersByWeek(current_week);
@@ -144,12 +153,12 @@ public class MesTask extends Task<Void> {
                 int available_wh_pos = getAvailableRawWhPos();
 
                 Part partinfo_emit = new Part(  p.getId(),
-                                            path_in_1,
-                                            PartProps.Pallet,
-                                            PartProps.getTypeValue(p.getType()),
-                                            available_wh_pos,
-                                            Aliases.NONE,
-                                            order_emit.getId());
+                        path_in_1,
+                        PartProps.Pallet,
+                        PartProps.getTypeValue(p.getType()),
+                        available_wh_pos,
+                        Aliases.NONE,
+                        order_emit.getId());
                 order_emit.setEmitOrder(target_in_1, partinfo_emit);
 
                 //Enviar a ordem para a DT
@@ -249,12 +258,12 @@ public class MesTask extends Task<Void> {
                     //Criar uma NEWPATH_IN order para essa peça
                     Order order_NewPathIn = new Order();
                     Part partinfo_NewPathIn = new Part( order_emit.getPart_info().getId(),
-                                                        path_in_2,
-                                                        order_emit.getPart_info().getType_base(),
-                                                        order_emit.getPart_info().getType_part(),
-                                                        order_emit.getPart_info().getStore_position(),
-                                                        order_emit.getPart_info().getOp(),
-                                                        order_NewPathIn.getId());
+                            path_in_2,
+                            order_emit.getPart_info().getType_base(),
+                            order_emit.getPart_info().getType_part(),
+                            order_emit.getPart_info().getStore_position(),
+                            order_emit.getPart_info().getOp(),
+                            order_NewPathIn.getId());
                     order_NewPathIn.setNewPathOrder(target_in_2, partinfo_NewPathIn);
 
                     //Enviar a order para a DT
@@ -271,12 +280,12 @@ public class MesTask extends Task<Void> {
                         int available_wh_pos = getAvailableRawWhPos();
 
                         Part partinfo_emit = new Part(  p.getId(),
-                                                        path_in_1,
-                                                        PartProps.Pallet,
-                                                        PartProps.getTypeValue(p.getType()),
-                                                        available_wh_pos,
-                                                        Aliases.NONE,
-                                                        order_emit.getId());
+                                path_in_1,
+                                PartProps.Pallet,
+                                PartProps.getTypeValue(p.getType()),
+                                available_wh_pos,
+                                Aliases.NONE,
+                                order_emit.getId());
                         order_emit.setEmitOrder(target_in_1, partinfo_emit);
 
                         //Enviar a ordem para a DT
@@ -299,16 +308,38 @@ public class MesTask extends Task<Void> {
 
             //------------------- Production Orders setup -------------------//
             //Criar as arraylist de paths e targets a serem usados
-            int target_outwh_prod = pM.getProductionWhToWhExit().getTarget();
-            int[] path_outwh_prod = pM.getProductionWhToWhExit().getPath();
+            int target_outwh_prod = 3;
+            int[] path_outwh_prod = new int[50];
+            path_outwh_prod[0] = 2; path_outwh_prod[1] = 3; path_outwh_prod[2] = -1;
+            System.out.println("Cheguei aqui");
+/*
+            int target_newpath_prod = 4;
+            ArrayList<Machine> machine_list = new ArrayList<>();
+            int[] path_machine1 = new int[50];
+            path_machine1[0] = 5; path_machine1[1] = 7; path_machine1[2] = 8; path_machine1[3] = 9; path_machine1[4] = 10;
+            path_machine1[5] = 11; path_machine1[6] = 12; path_machine1[7] = 13; path_machine1[8] = 14; path_machine1[9] = 15;
+            path_machine1[10] = 29; path_machine1[11] = 30; path_machine1[12] = -1;
+            int[] path_machine2 = new int[50];
+            path_machine2[0] = 5; path_machine2[1] = 7; path_machine2[2] = 8; path_machine2[3] = 9; path_machine2[4] = 16;
+            path_machine2[5] = 17; path_machine2[6] = 18; path_machine2[7] = 19; path_machine2[8] = 20; path_machine2[9] = 27;
+            path_machine2[10] = 28; path_machine2[11] = 29; path_machine2[12] = 30; path_machine2[13] = -1;
+            int[] path_machine3 = new int[50];
+            path_machine3[0] = 5; path_machine3[1] = 7; path_machine3[2] = 8; path_machine3[3] = 9; path_machine3[4] = 21;
+            path_machine3[5] = 22; path_machine3[6] = 23; path_machine3[7] = 24; path_machine3[8] = 25; path_machine3[9] = 26;
+            path_machine3[10] = 27; path_machine3[11] = 28; path_machine3[12] = 29; path_machine3[13] = 30; path_machine3[14] = -1;
 
+            machine_list.add(new Machine(11, "DualProducer"));
+            machine_list.add(new Machine(18, "DualProducer"));
+            machine_list.add(new Machine(25, "DualProducer"));*/
             ArrayList<Machine> mchnList = pM.getMachineList();
             int target_newpath_prod = mchnList.get(0).getTargetPath().getTarget();
 
             double defective_probability = 0.01;
-            int target_emit_prod = pM.getProductionEmitToWh().getTarget();
-            int[] path_emit_prod_1 = pM.getProductionEmitToWh().getPath();
-            int[] path_emit_prod_2 = pM.getProductionEmitToDisposer().getPath();
+            int target_emit_prod = 31;
+            int[] path_emit_prod_1 = new int[50];
+            path_emit_prod_1[0] = 32; path_emit_prod_1[1] = 33; path_emit_prod_1[2] = 34; path_emit_prod_1[3] = -1;
+            int[] path_emit_prod_2 = new int[50];
+            path_emit_prod_2[0] = 32; path_emit_prod_2[1] = 38; path_emit_prod_2[2] = 39; path_emit_prod_2[3] = -1;
 
             //Criar uma lista das Production Orders para esta semana
             ArrayList<ProductionOrder> PO_list = dbHandler.getProductionOrdersByWeek(current_week);
@@ -354,12 +385,12 @@ public class MesTask extends Task<Void> {
                 Piece p = sorted_production_pieces.get(0);
 
                 Part partinfo_outwh_prod = new Part(    p.getId(),
-                                                        path_outwh_prod,
-                                                        PartProps.Pallet,
-                                                        PartProps.getTypeValue(p.getType()),
-                                                        p.getWh_pos(), //alterar
-                                                        Aliases.NONE,
-                                                        order_OUTWH_prod.getId());
+                        path_outwh_prod,
+                        PartProps.Pallet,
+                        PartProps.getTypeValue(p.getType()),
+                        p.getWh_pos(), //alterar
+                        Aliases.NONE,
+                        order_OUTWH_prod.getId());
                 order_OUTWH_prod.setOutWhOrder(target_outwh_prod, p.getWh_pos(), partinfo_outwh_prod);
                 //Envia a ordem para a DT
                 opcHandler.sendOrder(order_OUTWH_prod);
@@ -397,12 +428,12 @@ public class MesTask extends Task<Void> {
                     int op = Aliases.getOpValueByFinalType(current_piece.getFinal_type());
                     //Utilizar o path para essa máquina
                     Part partinfo_NEWPATH_prod = new Part(  current_piece.getId(),
-                                                            current_piece.getAllocated_machine().getPath(),
-                                                            PartProps.EMPTY,
-                                                            order_OUTWH_prod.getPart_info().getType_part(),
-                                                            order_OUTWH_prod.getPart_info().getStore_position(),
-                                                            op,
-                                                            order_NEWPATH_prod.getId());
+                            current_piece.getAllocated_machine().getPath(),
+                            PartProps.EMPTY,
+                            order_OUTWH_prod.getPart_info().getType_part(),
+                            order_OUTWH_prod.getPart_info().getStore_position(),
+                            op,
+                            order_NEWPATH_prod.getId());
 
                     //Primeiro é necessário enviar uma NewProps order igual à NewPath
                     Order order_NEWPROPS_prod = new Order();
@@ -424,12 +455,12 @@ public class MesTask extends Task<Void> {
                         order_OUTWH_prod = new Order();
                         Piece p = sorted_production_pieces.get(removed_prod_pieces);
                         Part partinfo_outwh_prod = new Part(    p.getId(),
-                                                                path_outwh_prod,
-                                                                PartProps.Pallet,
-                                                                PartProps.getTypeValue(p.getType()),
-                                                                p.getWh_pos(), //alterar
-                                                                Aliases.NONE,
-                                                                order_OUTWH_prod.getId());
+                                path_outwh_prod,
+                                PartProps.Pallet,
+                                PartProps.getTypeValue(p.getType()),
+                                p.getWh_pos(), //alterar
+                                Aliases.NONE,
+                                order_OUTWH_prod.getId());
                         order_OUTWH_prod.setOutWhOrder(target_outwh_prod, p.getWh_pos(), partinfo_outwh_prod);
                         //Envia a ordem para a DT
                         opcHandler.sendOrder(order_OUTWH_prod);
@@ -476,12 +507,12 @@ public class MesTask extends Task<Void> {
                         int available_wh_pos = getAvailableFinalWhPos();
 
                         Part partinfo_emit = new Part(  curr_order.getPart_info().getId(),
-                                                        path_emit_prod,
-                                                        PartProps.Pallet,
-                                                        final_type,
-                                                        available_wh_pos,
-                                                        Aliases.NONE,
-                                                        order_INWH_prod.getId());
+                                path_emit_prod,
+                                PartProps.Pallet,
+                                final_type,
+                                available_wh_pos,
+                                Aliases.NONE,
+                                order_INWH_prod.getId());
 
                         order_INWH_prod.setEmitOrder(target_emit_prod, partinfo_emit);
                         opcHandler.sendOrder(order_INWH_prod);
@@ -533,3 +564,4 @@ public class MesTask extends Task<Void> {
 
     }
 }
+
