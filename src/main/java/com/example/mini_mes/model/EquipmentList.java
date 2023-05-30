@@ -34,4 +34,15 @@ public class EquipmentList {
         }
         return id;
     }
+    public ArrayList<Machine> getMachines(){
+        ArrayList<Machine> machineList = new ArrayList<>();
+        for(Equipment eq : equipmentList){
+            if( eq.getEquipment_type().equals("BothProducer")
+                || eq.getEquipment_type().equals("LidProducer")
+                || eq.getEquipment_type().equals("BaseProducer")){
+                machineList.add(new Machine(eq.getId_dt(), eq.getEquipment_type()) );
+            }
+        }
+        return machineList;
+    }
 }

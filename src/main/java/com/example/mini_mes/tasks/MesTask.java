@@ -310,8 +310,8 @@ public class MesTask extends Task<Void> {
             int target_outwh_prod = 3;
             int[] path_outwh_prod = new int[50];
             path_outwh_prod[0] = 2; path_outwh_prod[1] = 3; path_outwh_prod[2] = -1;
-
-
+            System.out.println("Cheguei aqui");
+/*
             int target_newpath_prod = 4;
             ArrayList<Machine> machine_list = new ArrayList<>();
             int[] path_machine1 = new int[50];
@@ -327,9 +327,11 @@ public class MesTask extends Task<Void> {
             path_machine3[5] = 22; path_machine3[6] = 23; path_machine3[7] = 24; path_machine3[8] = 25; path_machine3[9] = 26;
             path_machine3[10] = 27; path_machine3[11] = 28; path_machine3[12] = 29; path_machine3[13] = 30; path_machine3[14] = -1;
 
-            machine_list.add(new Machine(11, path_machine1, "DualProducer"));
-            machine_list.add(new Machine(18, path_machine2, "DualProducer"));
-            machine_list.add(new Machine(25, path_machine3, "DualProducer"));
+            machine_list.add(new Machine(11, "DualProducer"));
+            machine_list.add(new Machine(18, "DualProducer"));
+            machine_list.add(new Machine(25, "DualProducer"));*/
+            ArrayList<Machine> mchnList = pM.getMachineList();
+            int target_newpath_prod = mchnList.get(0).getTargetPath().getTarget();
 
             double defective_probability = 0.01;
             int target_emit_prod = 31;
@@ -354,7 +356,7 @@ public class MesTask extends Task<Void> {
             //Enquanto a lista desordenada não estiver empty
             while(!unsorted_production_pieces.isEmpty()){
                 //Para cada máquina, na lista ordenada de máquinas
-                for(Machine m : machine_list){
+                for(Machine m : mchnList){
                     //Percorrer a lista desordenada de peças
                     for(Piece p : unsorted_production_pieces){
                         //Se a peça é compatível com a máquina

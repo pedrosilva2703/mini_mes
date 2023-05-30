@@ -283,9 +283,9 @@ public class BackupWithStarTrek extends Task<Void> {
             path_machine3[9] = 27; path_machine3[10] = 28; path_machine3[11] = 29; path_machine3[12] = 30;
             path_machine3[13] = -1;
 
-            machine_list.add(new Machine(11, path_machine1, "DualProducer"));
-            machine_list.add(new Machine(18, path_machine2, "DualProducer"));
-            machine_list.add(new Machine(25, path_machine3, "DualProducer"));
+            machine_list.add(new Machine(11, "DualProducer"));
+            machine_list.add(new Machine(18, "DualProducer"));
+            machine_list.add(new Machine(25, "DualProducer"));
 
             int target_emit_prod= 31;
             int[] path_emit_prod_wh = new int[50];
