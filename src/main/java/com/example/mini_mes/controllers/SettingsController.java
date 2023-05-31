@@ -38,6 +38,7 @@ public class SettingsController implements Initializable {
     Factory factory = Factory.getInstance();
     DatabaseHandler dbHandler;
     Preferences dbPrefs = Preferences.userNodeForPackage(SettingsController.class);
+    Preferences layoutPrefs = Preferences.userNodeForPackage(SettingsController.class);
 
     @FXML private TextField tf_url;
     @FXML private TextField tf_port;
@@ -83,16 +84,23 @@ public class SettingsController implements Initializable {
     @FXML
     private void onLoadButtonClicked(){
         EquipmentList equipmentList;
+
+        String file_name = tf_file.getText();
+        if( file_name.isEmpty() ){
+            Alerts.showError("Please provide the name of the XML layout file.");
+            return;
+        }
+
         try {
             System.setProperty(JAXBContext.JAXB_CONTEXT_FACTORY, JAXBContextFactory.class.getName());
-            File file = new File("layout.xml");
+            File file = new File(file_name);
             JAXBContext jaxbContext = JAXBContext.newInstance(EquipmentList.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             equipmentList = (EquipmentList) unmarshaller.unmarshal(file);
 
         } catch (JAXBException e) {
             e.printStackTrace();
-            Alerts.showError("XML file parsing error");
+            Alerts.showError("XML file parsing error.");
             return;
         }
 
@@ -103,12 +111,17 @@ public class SettingsController implements Initializable {
         }
 
         PathManager.getInstance().initialize(equipmentList);
+        if(!PathManager.getInstance().isInitialized()){
+            Alerts.showError("Error generating paths between equipments. Please check the equipment parameters.");
+        }
 
         for(Machine m : PathManager.getInstance().getMachineList() ){
             dbHandler.createMachine(m);
         }
 
         startMesTask();
+
+        saveLayoutPreferences(file_name);
         updateInputsState();
     }
 
@@ -145,6 +158,9 @@ public class SettingsController implements Initializable {
         dbPrefs.put(    "username",     username);
         dbPrefs.put(    "password",     password);
     }
+    private void saveLayoutPreferences(String file_name){
+        layoutPrefs.put("file_name", file_name);
+    }
     private void loadDbPreferences(){
         if(dbPrefs.get("url", "").isEmpty()) return;
 
@@ -154,6 +170,11 @@ public class SettingsController implements Initializable {
         tf_schema.setText(   dbPrefs.get("schema", "")                      );
         tf_username.setText( dbPrefs.get("username", "")                    );
         tf_password.setText( dbPrefs.get("password", "")                    );
+    }
+    private void loadLayoutPreferences(){
+        if(layoutPrefs.get("file_name", "").isEmpty()) return;
+
+        tf_file.setText( layoutPrefs.get("file_name", "") );
     }
 
     private void disableDbInputs(){
@@ -188,6 +209,7 @@ public class SettingsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadDbPreferences();
+        loadLayoutPreferences();
         updateInputsState();
     }
 }
