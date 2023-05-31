@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1020.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mini_mes.controllers.MachineController">
+   <children>
+      <ScrollPane prefHeight="720.0" prefWidth="1020.0" vbarPolicy="ALWAYS">
+         <content>
+            <AnchorPane prefHeight="720.0" prefWidth="1000.0">
+               <children>
+                  <Text layoutX="40.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="page-title" text="Machine Overview" />
+                  <AnchorPane layoutX="40.0" layoutY="163.0" prefHeight="101.0" prefWidth="504.0">
+                     <children>
+                        <TableView fx:id="tv_machine" fixedCellSize="30.0" prefHeight="51.0" prefWidth="952.0" AnchorPane.bottomAnchor="50.0">
+                          <columns>
+                            <TableColumn fx:id="tc_Id" prefWidth="237.0" text="Machine ID on Digital Twin" />
+                            <TableColumn fx:id="tc_Type" minWidth="0.0" prefWidth="175.0" text="Type" />
+                              <TableColumn fx:id="tc_Current" minWidth="0.0" prefWidth="168.0" text="Current Schedule" />
+                              <TableColumn fx:id="tc_Defective" minWidth="0.0" prefWidth="163.0" text="Total Defective" />
+                              <TableColumn fx:id="tc_Total" minWidth="0.0" prefWidth="193.0" text="Total Produced" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

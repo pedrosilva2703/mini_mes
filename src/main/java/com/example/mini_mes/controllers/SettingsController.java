@@ -7,6 +7,7 @@ import com.example.mini_mes.dijkstra.PathManager;
 import com.example.mini_mes.model.Equipment;
 import com.example.mini_mes.model.EquipmentList;
 import com.example.mini_mes.model.Factory;
+import com.example.mini_mes.model.Machine;
 import com.example.mini_mes.tasks.MesTask;
 import com.example.mini_mes.utils.Alerts;
 import com.example.mini_mes.utils.EquipmentTravelCost;
@@ -45,6 +46,8 @@ public class SettingsController implements Initializable {
     @FXML private TextField tf_username;
     @FXML private TextField tf_password;
     @FXML private Button btn_dbConn;
+    @FXML private TextField tf_file;
+    @FXML private Button btn_load;
 
 
     @FXML
@@ -72,10 +75,7 @@ public class SettingsController implements Initializable {
         saveDbPreferences(url, port, databaseName, schema, username, password);
 
         dbHandler = DatabaseHandler.getInstance();
-        MesTask mesTask = new MesTask();
-        Thread thread = new Thread(mesTask);
-        thread.setDaemon(true);
-        thread.start();
+
 
         updateInputsState();
     }
@@ -101,26 +101,37 @@ public class SettingsController implements Initializable {
             Alerts.showError(layoutVerifierResult);
             return;
         }
-        /*
-        //Dijkstra
-        ArrayList<Integer> test = Dijkstra.shortestPath(equipmentList, 1, 8);
-
-        for(int i : test){
-            System.out.println(i);
-        }*/
-
 
         PathManager.getInstance().initialize(equipmentList);
 
+        for(Machine m : PathManager.getInstance().getMachineList() ){
+            dbHandler.createMachine(m);
+        }
+
+        startMesTask();
+        updateInputsState();
+    }
+
+    private void startMesTask(){
+        MesTask mesTask = new MesTask();
+        Thread thread = new Thread(mesTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     // Manage input textfields and buttons
     private void updateInputsState(){
-        if(     factory.isWaitingForDbConn() ){
-
+        if(factory.isWaitingForDbConn() ){
+            disableLayoutInputs();
         }
-        else{
+        else if(!factory.isWaitingForDbConn() && !PathManager.getInstance().isInitialized()){
             disableDbInputs();
+            enableLayoutInputs();
+            dbHandler = DatabaseHandler.getInstance();
+        }
+        else if(!factory.isWaitingForDbConn() && PathManager.getInstance().isInitialized()){
+            disableDbInputs();
+            disableLayoutInputs();
             dbHandler = DatabaseHandler.getInstance();
         }
     }
@@ -158,6 +169,21 @@ public class SettingsController implements Initializable {
         btn_dbConn.setStyle("-fx-background-color: green");
         btn_dbConn.setDisable(true);
     }
+
+    private void disableLayoutInputs(){
+        tf_file.setDisable(true);
+
+        if(PathManager.getInstance().isInitialized() ){
+            btn_load.setText("Loaded");
+            btn_load.setStyle("-fx-background-color: green");
+        }
+        btn_load.setDisable(true);
+    }
+    private void enableLayoutInputs(){
+        tf_file.setDisable(false);
+        btn_load.setDisable(false);
+    }
+
     // Initialize method
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -92,13 +92,13 @@ public class MesTask extends Task<Void> {
             if(!expedition_pieces.isEmpty() ) {
                 order_outwh = new Order();
                 Piece p = expedition_pieces.get(0);
-                Part partinfo_outwh = new Part(p.getId(),
-                        path_out_1,
-                        PartProps.Pallet,
-                        PartProps.getTypeValue(p.getType()),
-                        p.getId(), //alterar
-                        Aliases.NONE,
-                        order_outwh.getId());
+                Part partinfo_outwh = new Part( p.getId(),
+                                                path_out_1,
+                                                PartProps.Pallet,
+                                                PartProps.getTypeValue(p.getType()),
+                                                p.getWh_pos(),
+                                                Aliases.NONE,
+                                                order_outwh.getId());
                 order_outwh.setOutWhOrder(target_out_1, p.getWh_pos(), partinfo_outwh);
 
                 //Enviar a ordem para a DT
@@ -204,13 +204,13 @@ public class MesTask extends Task<Void> {
                         //Fazer uma nova OUTWH order com a próxima peça
                         order_outwh = new Order();
                         Piece p = expedition_pieces.get(removed_pieces);
-                        Part partinfo_outwh = new Part(p.getId(),
-                                path_out_1,
-                                PartProps.Pallet,
-                                PartProps.getTypeValue(p.getType()),
-                                p.getId(), //alterar
-                                Aliases.NONE,
-                                order_outwh.getId());
+                        Part partinfo_outwh = new Part( p.getId(),
+                                                        path_out_1,
+                                                        PartProps.Pallet,
+                                                        PartProps.getTypeValue(p.getType()),
+                                                        p.getWh_pos(),
+                                                        Aliases.NONE,
+                                                        order_outwh.getId());
                         order_outwh.setOutWhOrder(target_out_1, p.getWh_pos(), partinfo_outwh);
 
                         //Enviar a ordem para a DT
@@ -333,6 +333,7 @@ public class MesTask extends Task<Void> {
                         if(m.isOperationCompatible(p.getFinal_type() ) ) {
                             //Adiciona o id desta máquina à peça
                             p.setAllocated_machine(m);
+                            dbHandler.updatePieceDestinationMachine(p.getId(), m.getDt_id() );
                             //Adiciona esta peça à lista de peças scheduled
                             sorted_production_pieces.add(p);
                             //Remove esta peça da lista desordenada
@@ -357,7 +358,7 @@ public class MesTask extends Task<Void> {
                                                         path_outwh_prod,
                                                         PartProps.Pallet,
                                                         PartProps.getTypeValue(p.getType()),
-                                                        p.getWh_pos(), //alterar
+                                                        p.getWh_pos(),
                                                         Aliases.NONE,
                                                         order_OUTWH_prod.getId());
                 order_OUTWH_prod.setOutWhOrder(target_outwh_prod, p.getWh_pos(), partinfo_outwh_prod);
@@ -427,7 +428,7 @@ public class MesTask extends Task<Void> {
                                                                 path_outwh_prod,
                                                                 PartProps.Pallet,
                                                                 PartProps.getTypeValue(p.getType()),
-                                                                p.getWh_pos(), //alterar
+                                                                p.getWh_pos(),
                                                                 Aliases.NONE,
                                                                 order_OUTWH_prod.getId());
                         order_OUTWH_prod.setOutWhOrder(target_outwh_prod, p.getWh_pos(), partinfo_outwh_prod);
@@ -440,8 +441,6 @@ public class MesTask extends Task<Void> {
                         //A OUTWH_prod passa a ser null
                         order_OUTWH_prod = null;
                     }
-
-
                 }
 
 

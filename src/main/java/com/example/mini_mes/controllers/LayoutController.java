@@ -1,6 +1,7 @@
 package com.example.mini_mes.controllers;
 
 import com.example.mini_mes.Launcher;
+import com.example.mini_mes.dijkstra.PathManager;
 import com.example.mini_mes.model.Factory;
 import com.example.mini_mes.utils.Alerts;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import java.util.ResourceBundle;
 
 public class LayoutController{
     ScheduleController scheduleController;
+    MachineController machineController;
     WarehouseController warehouseController;
     HistoryController historyController;
 
@@ -28,13 +30,13 @@ public class LayoutController{
     @FXML private Button historyButton;
     @FXML private Button settingsButton;
 
-
+    private String navigationError = "Please ensure all configurations on the 'Settings' page are completed";
 
     @FXML
     private void onScheduleButtonClick(){
         Factory factory = Factory.getInstance();
-        if( factory.isWaitingForDbConn() ){
-            Alerts.showInfo("Please, connect to the database first.");
+        if( factory.isWaitingForDbConn() || !PathManager.getInstance().isInitialized() ){
+            Alerts.showInfo(navigationError);
             return;
         }
         interruptActiveThreads();
@@ -44,8 +46,8 @@ public class LayoutController{
     @FXML
     private void onWarehouseButtonClick(){
         Factory factory = Factory.getInstance();
-        if( factory.isWaitingForDbConn() ){
-            Alerts.showInfo("Please, connect to the database first.");
+        if( factory.isWaitingForDbConn() || !PathManager.getInstance().isInitialized()){
+            Alerts.showInfo(navigationError);
             return;
         }
         interruptActiveThreads();
@@ -55,18 +57,18 @@ public class LayoutController{
     @FXML
     private void onMachineButtonClick(){
         Factory factory = Factory.getInstance();
-        if( factory.isWaitingForDbConn() ){
-            Alerts.showInfo("Please, connect to the database first.");
+        if( factory.isWaitingForDbConn() || !PathManager.getInstance().isInitialized()){
+            Alerts.showInfo(navigationError);
             return;
         }
-        //loadPage("Settings");
-        //refreshButtonStates(settingsButton);
+        loadPage("Machine");
+        refreshButtonStates(machineButton);
     }
     @FXML
     private void onHistoryButtonClick(){
         Factory factory = Factory.getInstance();
-        if( factory.isWaitingForDbConn() ){
-            Alerts.showInfo("Please, connect to the database first.");
+        if( factory.isWaitingForDbConn() || !PathManager.getInstance().isInitialized() ){
+            Alerts.showInfo(navigationError);
             return;
         }
         interruptActiveThreads();
@@ -129,6 +131,10 @@ public class LayoutController{
             if(page.equals("Warehouse") ){
                 WarehouseController warehouseController = contentLoader.getController();
                 this.warehouseController = warehouseController;
+            }
+            if(page.equals("Machine") ){
+                MachineController machineController = contentLoader.getController();
+                this.machineController = machineController;
             }
             if(page.equals("History") ){
                 HistoryController historyController = contentLoader.getController();

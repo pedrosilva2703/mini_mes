@@ -130,7 +130,7 @@ public class PathManager {
         return true;
     }
 
-
+    public boolean isInitialized() {return initialized;}
     public TargetPath getInboundEmitToBuffer() {return inboundEmitToBuffer;}
     public TargetPath getInboundBufferToWh() {return inboundBufferToWh;}
     public TargetPath getProductionWhToWhExit() {return productionWhToWhExit;}

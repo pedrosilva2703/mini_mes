@@ -535,6 +535,39 @@ public class DatabaseHandler {
         }
         return;
     }
+    public void updatePieceDestinationMachine(int pieceId, int machineId){
+        String sql =    "UPDATE piece \n" +
+                "SET fk_machine = ?\n" +
+                "WHERE id=?\n";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, machineId);
+            stmt.setInt(2, pieceId);
+            stmt.execute();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
+        }
+        return;
+    }
+
+    //Machine methods
+    public boolean createMachine(Machine m) {
+        try {
+            PreparedStatement insertStatement = connection.prepareStatement(
+                    "INSERT INTO machine (id, type) VALUES (?, ?);");
+            insertStatement.setInt(1, m.getDt_id());
+            insertStatement.setString(2, m.getType());
+
+
+            insertStatement.execute();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     //Piece data displaying methods
     public ArrayList<Piece> getInboundPiecesByWeek(int week_filter){
@@ -966,6 +999,49 @@ public class DatabaseHandler {
         }
         return null;
     }
+
+    //Machine data display methods
+    public ArrayList<Machine> getMachines(int week_filter){
+        String sql =    "SELECT  machine.id,\n" +
+                        "        machine.type,\n" +
+                        "        SUM(CASE WHEN production_order.week<? AND piece.status!='defective' THEN 1 ELSE 0 END) as total_produced,\n" +
+                        "        SUM(CASE WHEN production_order.week<? AND piece.status='defective' THEN 1 ELSE 0 END) as total_defective,\n" +
+                        "        SUM(CASE WHEN production_order.week=? THEN 1 ELSE 0 END) as current_pieces\n" +
+                        "FROM machine\n" +
+                        "LEFT JOIN piece ON piece.fk_machine = machine.id\n" +
+                        "LEFT JOIN production_order ON production_order.id = piece.fk_production_order\n" +
+                        "GROUP BY machine.id,\n" +
+                        "         machine.type";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, week_filter);
+            stmt.setInt(2, week_filter);
+            stmt.setInt(3, week_filter);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<Machine> returnValues = new ArrayList<>();
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                String type = sqlReturnValues.getString(2);
+                Integer total_produced = sqlReturnValues.getInt(3);
+                Integer total_defective = sqlReturnValues.getInt(4);
+                Integer current_pieces = sqlReturnValues.getInt(5);
+
+                Machine m = new Machine(id, type);
+                m.setTotal_produced(total_produced);
+                m.setTotal_defective(total_defective);
+                m.setCurrent_pieces(current_pieces);
+
+                returnValues.add(m);
+            }
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 

@@ -4,8 +4,10 @@ import com.example.mini_mes.dijkstra.PathCost;
 
 public class Machine {
     int dt_id;
-    int[] path;
     String type;
+    int current_pieces;
+    int total_defective;
+    int total_produced;
 
     TargetPath targetPath;
     PathCost pathCost;
@@ -21,17 +23,22 @@ public class Machine {
     public void setDt_id(int dt_id) {
         this.dt_id = dt_id;
     }
-
     public int[] getPath() {
         return targetPath.getPath();
     }
-
     public String getType() {
         return type;
     }
     public void setType(String type) {
         this.type = type;
     }
+
+    public int getCurrent_pieces() {return current_pieces;}
+    public void setCurrent_pieces(int current_pieces) {this.current_pieces = current_pieces;}
+    public int getTotal_defective() {return total_defective;}
+    public void setTotal_defective(int total_defective) {this.total_defective = total_defective;}
+    public int getTotal_produced() {return total_produced;}
+    public void setTotal_produced(int total_produced) {this.total_produced = total_produced;}
 
     public TargetPath getTargetPath() {return targetPath;}
     public void setTargetPath(TargetPath targetPath) {this.targetPath = targetPath;}
