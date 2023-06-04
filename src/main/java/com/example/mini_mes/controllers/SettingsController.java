@@ -49,6 +49,7 @@ public class SettingsController implements Initializable {
     @FXML private Button btn_dbConn;
     @FXML private TextField tf_file;
     @FXML private Button btn_load;
+    @FXML private TextField tf_probability;
 
 
     @FXML
@@ -91,6 +92,17 @@ public class SettingsController implements Initializable {
             return;
         }
 
+        if(!Verifier.isDouble(tf_probability)){
+            Alerts.showError("The probability value needs to be a double");
+            return ;
+        }
+        double defectiveProbability  = Double.parseDouble(tf_probability.getText());
+        if(defectiveProbability<=0 || defectiveProbability>=100){
+            Alerts.showError("Probability must be higher than 0% and lower than 100%");
+            return ;
+        }
+        factory.setDefectiveProbability(defectiveProbability/100);
+
         try {
             System.setProperty(JAXBContext.JAXB_CONTEXT_FACTORY, JAXBContextFactory.class.getName());
             File file = new File(file_name);
@@ -115,6 +127,7 @@ public class SettingsController implements Initializable {
             Alerts.showError("Error generating paths between equipments. Please check the equipment parameters.");
         }
 
+        dbHandler.deleteMachines();
         for(Machine m : PathManager.getInstance().getMachineList() ){
             dbHandler.createMachine(m);
         }
@@ -160,6 +173,7 @@ public class SettingsController implements Initializable {
     }
     private void saveLayoutPreferences(String file_name){
         layoutPrefs.put("file_name", file_name);
+        layoutPrefs.putDouble("defective_probability", factory.getDefectiveProbability());
     }
     private void loadDbPreferences(){
         if(dbPrefs.get("url", "").isEmpty()) return;
@@ -175,6 +189,7 @@ public class SettingsController implements Initializable {
         if(layoutPrefs.get("file_name", "").isEmpty()) return;
 
         tf_file.setText( layoutPrefs.get("file_name", "") );
+        tf_probability.setText(      Double.toString( layoutPrefs.getDouble("defective_probability", 0)*100 )   );
     }
 
     private void disableDbInputs(){
@@ -193,15 +208,17 @@ public class SettingsController implements Initializable {
 
     private void disableLayoutInputs(){
         tf_file.setDisable(true);
-
+        tf_probability.setDisable(true);
         if(PathManager.getInstance().isInitialized() ){
             btn_load.setText("Loaded");
             btn_load.setStyle("-fx-background-color: green");
         }
         btn_load.setDisable(true);
+
     }
     private void enableLayoutInputs(){
         tf_file.setDisable(false);
+        tf_probability.setDisable(false);
         btn_load.setDisable(false);
     }
 

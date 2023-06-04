@@ -305,7 +305,7 @@ public class MesTask extends Task<Void> {
             ArrayList<Machine> mchnList = pM.getMachineList();
             int target_newpath_prod = mchnList.get(0).getTargetPath().getTarget();
 
-            double defective_probability = 0.01;
+            double defective_probability = Factory.getInstance().getDefectiveProbability();
             int target_emit_prod = pM.getProductionEmitToWh().getTarget();
             int[] path_emit_prod_1 = pM.getProductionEmitToWh().getPath();
             int[] path_emit_prod_2 = pM.getProductionEmitToDisposer().getPath();

@@ -60,16 +60,14 @@ public class DatabaseHandler {
         Factory factory = Factory.getInstance();
         String sql = "UPDATE factory SET     setup_status = ?,       " +
                                             "sim_status = ?,         " +
-                                            "working_mode = ?,       " +
                                             "warehouse_capacity = ?, " +
                                             "weekly_production = ?;  " ;
         try {
             PreparedStatement updateStatement = connection.prepareStatement(sql);
             updateStatement.setString(1,    factory.getSetup_status()       );
             updateStatement.setString(2,    factory.getSim_status()         );
-            updateStatement.setString(3,    factory.getWorking_mode()       );
-            updateStatement.setInt(   4,    factory.getWarehouse_capacity() );
-            updateStatement.setInt(   5,    factory.getWeekly_production()  );
+            updateStatement.setInt(   3,    factory.getWarehouse_capacity() );
+            updateStatement.setInt(   4,    factory.getWeekly_production()  );
             updateStatement.execute();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -86,9 +84,8 @@ public class DatabaseHandler {
 
             factory.setSetup_status(sqlReturnValues.getString(1));
             factory.setSim_status(sqlReturnValues.getString(2));
-            factory.setWorking_mode(sqlReturnValues.getString(3) );
-            factory.setWarehouse_capacity(sqlReturnValues.getInt(4) );
-            factory.setWeekly_production(sqlReturnValues.getInt(5) );
+            factory.setWarehouse_capacity(sqlReturnValues.getInt(3) );
+            factory.setWeekly_production(sqlReturnValues.getInt(4) );
 
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -553,6 +550,18 @@ public class DatabaseHandler {
     }
 
     //Machine methods
+    public boolean deleteMachines() {
+        try {
+            PreparedStatement deleteStatement = connection.prepareStatement(
+                    "DELETE FROM machine");
+
+            deleteStatement.execute();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return false;
+        }
+        return true;
+    }
     public boolean createMachine(Machine m) {
         try {
             PreparedStatement insertStatement = connection.prepareStatement(

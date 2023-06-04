@@ -90,6 +90,9 @@ public class LayoutController{
         if(warehouseController!=null){
             warehouseController.interruptRefreshThread();
         }
+        if(machineController!=null){
+            machineController.interruptRefreshThread();
+        }
         if(historyController!=null){
             historyController.interruptRefreshThread();
         }
