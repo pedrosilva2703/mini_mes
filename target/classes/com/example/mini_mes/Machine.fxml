@@ -15,13 +15,13 @@
                   <Text layoutX="40.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="page-title" text="Machine Overview" />
                   <AnchorPane layoutX="40.0" layoutY="163.0" prefHeight="101.0" prefWidth="504.0">
                      <children>
-                        <TableView fx:id="tv_machine" fixedCellSize="30.0" prefHeight="51.0" prefWidth="952.0" AnchorPane.bottomAnchor="50.0">
+                        <TableView fx:id="tv_machine" fixedCellSize="30.0" prefHeight="52.0" prefWidth="872.0" AnchorPane.bottomAnchor="50.0">
                           <columns>
-                            <TableColumn fx:id="tc_Id" prefWidth="237.0" text="Machine ID on Digital Twin" />
-                            <TableColumn fx:id="tc_Type" minWidth="0.0" prefWidth="175.0" text="Type" />
-                              <TableColumn fx:id="tc_Current" minWidth="0.0" prefWidth="168.0" text="Current Schedule" />
-                              <TableColumn fx:id="tc_Defective" minWidth="0.0" prefWidth="163.0" text="Total Defective" />
-                              <TableColumn fx:id="tc_Total" minWidth="0.0" prefWidth="193.0" text="Total Produced" />
+                            <TableColumn fx:id="tc_Id" prefWidth="220.0" text="Machine ID on Digital Twin" />
+                            <TableColumn fx:id="tc_Type" minWidth="0.0" prefWidth="160.0" text="Type" />
+                              <TableColumn fx:id="tc_Current" minWidth="0.0" prefWidth="160.0" text="Current Schedule" />
+                              <TableColumn fx:id="tc_Defective" minWidth="0.0" prefWidth="160.0" text="Total Defective" />
+                              <TableColumn fx:id="tc_Total" minWidth="0.0" prefWidth="160.0" text="Total Produced" />
                           </columns>
                         </TableView>
                      </children>

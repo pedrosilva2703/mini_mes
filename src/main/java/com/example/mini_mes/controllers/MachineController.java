@@ -55,12 +55,12 @@ public class MachineController implements Initializable {
     void updateUI(){
         //Retrieve data from database to lists
         mList = dbHandler.getMachines(factory.getCurrent_week() );
-
+        
         //Clear tables and add new data
         tv_machine.getItems().clear();
         if( mList != null ){
             tv_machine.getItems().addAll( mList );
-            tv_machine.setPrefHeight( (tv_machine.getItems().size()+1.15) * tv_machine.getFixedCellSize() );
+            tv_machine.setPrefHeight( (tv_machine.getItems().size()+1.20) * tv_machine.getFixedCellSize() );
         }
     }
 

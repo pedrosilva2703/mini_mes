@@ -18,12 +18,12 @@
                         <AnchorPane fx:id="anchor_IO" prefHeight="135.0" prefWidth="948.0" AnchorPane.topAnchor="0.0">
                            <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sub-title" text="Inbound log" AnchorPane.topAnchor="0.0" />
-                                    <TableView fx:id="tv_IO" fixedCellSize="30.0" layoutY="50.0" prefHeight="52.0" prefWidth="952.0">
+                                    <TableView fx:id="tv_IO" fixedCellSize="30.0" layoutY="50.0" prefHeight="52.0" prefWidth="575.0">
                                         <columns>
-                                    <TableColumn fx:id="tc_IO_week" prefWidth="79.0" text="Week" />
-                                            <TableColumn fx:id="tc_IO_type" prefWidth="339.0" text="Type" />
-                                            <TableColumn fx:id="tc_IO_supplier" minWidth="0.0" prefWidth="214.0" text="Supplier" />
-                                            <TableColumn fx:id="tc_IO_client" minWidth="0.0" prefWidth="274.0" text="Allocated for Client" />
+                                    <TableColumn fx:id="tc_IO_week" prefWidth="90.0" text="Week" />
+                                            <TableColumn fx:id="tc_IO_type" prefWidth="155.0" text="Type" />
+                                            <TableColumn fx:id="tc_IO_supplier" minWidth="0.0" prefWidth="155.0" text="Supplier" />
+                                            <TableColumn fx:id="tc_IO_client" minWidth="0.0" prefWidth="160.0" text="Allocated for Client" />
                                         </columns>
                                     </TableView>
                            </children>
@@ -31,14 +31,14 @@
                         <AnchorPane fx:id="anchor_PO" layoutY="168.0" prefHeight="135.0" prefWidth="948.0">
                            <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sub-title" text="Production log" AnchorPane.topAnchor="0.0" />
-                                    <TableView fx:id="tv_PO" fixedCellSize="30.0" layoutY="50.0" prefHeight="52.0" prefWidth="952.0">
+                                    <TableView fx:id="tv_PO" fixedCellSize="30.0" layoutY="50.0" prefHeight="52.0" prefWidth="950.0">
                                         <columns>
-                                    <TableColumn fx:id="tc_PO_week" prefWidth="61.0" text="Week" />
-                                            <TableColumn fx:id="tc_PO_type" prefWidth="259.0" text="Type" />
-                                            <TableColumn fx:id="tc_PO_operation" minWidth="0.0" prefWidth="91.0" text="Operation" />
-                                            <TableColumn fx:id="tc_PO_status" minWidth="0.0" prefWidth="132.0" text="Status" />
-                                            <TableColumn fx:id="tc_PO_duration" minWidth="0.0" prefWidth="189.0" text="Production duration (s)" />
-                                            <TableColumn fx:id="tc_PO_client" minWidth="0.0" prefWidth="199.0" text="Allocated for Client" />
+                                    <TableColumn fx:id="tc_PO_week" prefWidth="90.0" text="Week" />
+                                            <TableColumn fx:id="tc_PO_type" prefWidth="155.0" text="Type" />
+                                            <TableColumn fx:id="tc_PO_operation" minWidth="0.0" prefWidth="155.0" text="Operation" />
+                                            <TableColumn fx:id="tc_PO_status" minWidth="0.0" prefWidth="155.0" text="Status" />
+                                            <TableColumn fx:id="tc_PO_duration" minWidth="0.0" prefWidth="190.0" text="Production duration (s)" />
+                                            <TableColumn fx:id="tc_PO_client" minWidth="0.0" prefWidth="190.0" text="Allocated for Client" />
                                         </columns>
                                     </TableView>
                            </children>
@@ -46,12 +46,12 @@
                         <AnchorPane fx:id="anchor_EO" layoutY="330.0" prefHeight="135.0" prefWidth="948.0" AnchorPane.bottomAnchor="50.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sub-title" text="Expedition log" AnchorPane.topAnchor="0.0" />
-                              <TableView fx:id="tv_EO" fixedCellSize="30.0" layoutY="50.0" prefHeight="52.0" prefWidth="952.0">
+                              <TableView fx:id="tv_EO" fixedCellSize="30.0" layoutY="50.0" prefHeight="52.0" prefWidth="575.0">
                                  <columns>
-                                    <TableColumn fx:id="tc_EO_week" prefWidth="172.0" text="Week" />
-                                    <TableColumn fx:id="tc_EO_type" prefWidth="172.0" text="Type" />
-                                    <TableColumn fx:id="tc_EO_supplier" minWidth="0.0" prefWidth="218.0" text="Supplier" />
-                                    <TableColumn fx:id="tc_EO_client" minWidth="0.0" prefWidth="230.0" text="Client" />
+                                    <TableColumn fx:id="tc_EO_week" prefWidth="90.0" text="Week" />
+                                    <TableColumn fx:id="tc_EO_type" prefWidth="155.0" text="Type" />
+                                    <TableColumn fx:id="tc_EO_supplier" minWidth="0.0" prefWidth="155.0" text="Supplier" />
+                                    <TableColumn fx:id="tc_EO_client" minWidth="0.0" prefWidth="160.0" text="Client" />
                                  </columns>
                               </TableView>
                            </children>

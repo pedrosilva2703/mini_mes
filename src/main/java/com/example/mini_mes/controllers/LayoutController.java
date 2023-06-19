@@ -61,6 +61,7 @@ public class LayoutController{
             Alerts.showInfo(navigationError);
             return;
         }
+        interruptActiveThreads();
         loadPage("Machine");
         refreshButtonStates(machineButton);
     }

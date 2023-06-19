@@ -71,17 +71,17 @@ public class WarehouseController implements Initializable {
         tv_RM.getItems().clear();
         if( rmList != null ){
             tv_RM.getItems().addAll( rmList );
-            tv_RM.setPrefHeight( (tv_RM.getItems().size()+1.15) * tv_RM.getFixedCellSize() );
+            tv_RM.setPrefHeight( (tv_RM.getItems().size()+1.20) * tv_RM.getFixedCellSize() );
         }
 
         tv_FP.getItems().clear();
         if( fpList != null ){
             tv_FP.getItems().addAll( fpList );
-            tv_FP.setPrefHeight( (tv_FP.getItems().size()+1.15) * tv_FP.getFixedCellSize() );
+            tv_FP.setPrefHeight( (tv_FP.getItems().size()+1.20) * tv_FP.getFixedCellSize() );
         }
 
         // Constraint the TOP of the 2nd table to the Height of the first table
-        double rm_height = anchor_RM.getPrefHeight()+tv_RM.getPrefHeight();
+        double rm_height = anchor_RM.getPrefHeight()*0.75+tv_RM.getPrefHeight();
         AnchorPane.setTopAnchor( anchor_FP, rm_height );
     }
 
