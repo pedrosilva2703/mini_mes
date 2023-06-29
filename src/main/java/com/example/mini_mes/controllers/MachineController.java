@@ -55,7 +55,7 @@ public class MachineController implements Initializable {
     void updateUI(){
         //Retrieve data from database to lists
         mList = dbHandler.getMachines(factory.getCurrent_week() );
-        
+
         //Clear tables and add new data
         tv_machine.getItems().clear();
         if( mList != null ){
