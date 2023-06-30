@@ -950,9 +950,67 @@ public class DatabaseHandler {
         }
         return null;
     }
-    public ArrayList<Piece> getPiecesInWarehouse(String filter_status){
+    public ArrayList<Piece> getPiecesInRawWarehouse(String filter_status){
         String sql =    "SELECT  piece.id,\n" +
                 "        supplier_order.type,\n" +
+                "        piece.status,\n" +
+                "        piece.final_type,\n" +
+                "        piece.week_arrived,\n" +
+                "        piece.week_produced,\n" +
+                "        piece.duration_production,\n" +
+                "        piece.safety_stock,\n" +
+                "        piece.wh_pos,\n" +
+                "        client.name,\n   " +
+                "        supplier.name\n" +
+                "FROM piece \n" +
+                "LEFT JOIN client_order ON piece.fk_client_order = client_order.id\n" +
+                "LEFT JOIN client ON client_order.fk_client = client.id\n" +
+                "LEFT JOIN supplier_order ON piece.fk_supplier_order = supplier_order.id\n" +
+                "LEFT JOIN supplier ON supplier_order.fk_supplier = supplier.id\n" +
+                "WHERE piece.status = ? AND piece.wh_pos IS NOT NULL\n" +
+                "ORDER BY piece.id";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, filter_status);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            ArrayList<Piece> returnValues = new ArrayList<>();
+
+            while (sqlReturnValues.next()){
+                Integer id = sqlReturnValues.getInt(1);
+                String type = sqlReturnValues.getString(2);
+                String status = sqlReturnValues.getString(3);
+                String final_type = sqlReturnValues.getString(4);
+                Integer week_arrived = sqlReturnValues.getInt(5);
+                Integer week_produced = sqlReturnValues.getInt(6);
+                Float duration_production = sqlReturnValues.getFloat(7);
+                boolean safety_stock = sqlReturnValues.getBoolean(8);
+                Integer wh_pos = sqlReturnValues.getInt(9);
+
+                Piece p = new Piece(id, type, status, final_type, week_arrived, week_produced, duration_production, safety_stock, wh_pos);
+
+                String client = sqlReturnValues.getString(10);
+                if(client==null){
+                    p.setClient("None");
+                }
+                else{
+                    p.setClient(client);
+                }
+                String supplier = sqlReturnValues.getString(11);
+                p.setSupplier(supplier);
+
+                returnValues.add(p);
+            }
+            return returnValues;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
+    }
+    public ArrayList<Piece> getPiecesInFinalWarehouse(String filter_status){
+        String sql =    "SELECT  piece.id,\n" +
+                "        piece.type,\n" +
                 "        piece.status,\n" +
                 "        piece.final_type,\n" +
                 "        piece.week_arrived,\n" +

@@ -121,7 +121,7 @@
     </equipment>
     <equipment>
         <id_dt>18</id_dt>
-        <equipment_type>BothProducer</equipment_type>
+        <equipment_type>LidProducer</equipment_type>
         <neighbourIdList>
             <id>19</id>
         </neighbourIdList>
@@ -172,7 +172,7 @@
     </equipment>
     <equipment>
         <id_dt>25</id_dt>
-        <equipment_type>BothProducer</equipment_type>
+        <equipment_type>BaseProducer</equipment_type>
         <neighbourIdList>
             <id>26</id>
         </neighbourIdList>

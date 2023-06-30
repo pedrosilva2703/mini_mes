@@ -64,8 +64,8 @@ public class WarehouseController implements Initializable {
 
     void updateUI(){
         //Retrieve data from database to lists
-        rmList = dbHandler.getPiecesInWarehouse("stored");
-        fpList = dbHandler.getPiecesInWarehouse("produced");
+        rmList = dbHandler.getPiecesInRawWarehouse("stored");
+        fpList = dbHandler.getPiecesInFinalWarehouse("produced");
 
         //Clear tables and add new data
         tv_RM.getItems().clear();

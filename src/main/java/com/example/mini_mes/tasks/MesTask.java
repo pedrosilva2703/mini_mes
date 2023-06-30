@@ -222,7 +222,7 @@ public class MesTask extends Task<Void> {
                         dbHandler.updatePieceStatus(p.getId(), "shipping");
                     } else {
                         //A OUTWH passa a ser null
-                        order_emit = null;
+                        order_outwh = null;
                     }
                 }
                 //------------------- Inbound Orders -------------------//
