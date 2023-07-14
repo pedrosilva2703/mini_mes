@@ -51,6 +51,12 @@ public class MesTask extends Task<Void> {
             while(!Factory.getInstance().isOngoingWeek() ){
                 //Retrieves factory status until is ready to start the week
                 dbHandler.retrieveFactoryStatus();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    break;
+                }
             }
             //Week was started by mini-ERP
 
