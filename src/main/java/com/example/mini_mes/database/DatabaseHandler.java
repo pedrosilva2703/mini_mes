@@ -15,13 +15,7 @@ public class DatabaseHandler {
     private String username;
     private String password;
     private Connection connection = null;
-    /*dbHandler = new DatabaseHandler(
-            "db.fe.up.pt",
-            5432,
-            "sie2252",
-            "siefinal",
-            "sie2252",
-            "GDQllMDQ");*/
+
     private DatabaseHandler(String url, int port, String databaseName, String schema, String username, String password){
         this.url = url;
         this.port = port;
